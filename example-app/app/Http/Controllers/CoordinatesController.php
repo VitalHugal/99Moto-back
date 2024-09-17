@@ -17,7 +17,7 @@ class CoordinatesController extends Controller
         $this->coordinate = $coordinate;
     }
     
-    public function verifyCoordinates(Request $request)
+    public function verifyCoordinates()
     {
         function getDistanceFromLatLonInKm($lat1, $lon1, $lat2, $lon2)
         {
