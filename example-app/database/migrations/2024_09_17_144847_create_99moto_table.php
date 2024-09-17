@@ -14,15 +14,15 @@ return new class extends Migration
     {
         Schema::create('99moto_coordinates', function (Blueprint $table) {
             $table->id();
-            $table->string('latitudine-1');
-            $table->string('longitudine-1');
-            $table->string('latitudine-2');
-            $table->string('longitudine-2');
-            $table->string('custom-1');
-            $table->string('custom-2');
-            $table->string('custom-3');
-            $table->string('custom-4');
-            $table->string('custom-5');
+            $table->string('latitudine_1');
+            $table->string('longitudine_1');
+            $table->string('latitudine_2');
+            $table->string('longitudine_2');
+            $table->string('custom_1')->nullable();
+            $table->string('custom_2')->nullable();
+            $table->string('custom_3')->nullable();
+            $table->string('custom_4')->nullable();
+            $table->string('custom_5')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

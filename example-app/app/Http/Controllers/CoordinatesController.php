@@ -5,23 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Coordinates;
+use App\Models\Coordinate;
 
 class CoordinatesController extends Controller
 {
 
-    protected $coordinates;
+    protected $coordinate;
 
-    public function __construct(Coordinates $coordinates)
+    public function __construct(Coordinate $coordinate)
     {
-        $this->coordinates = $coordinates;
+        $this->coordinate = $coordinate;
     }
-
-    /**
-     * 
-     * Display a listing of the resource.
-     */
-    public function verifyCoordinates()
+    
+    public function verifyCoordinates(Request $request)
     {
         function getDistanceFromLatLonInKm($lat1, $lon1, $lat2, $lon2)
         {
@@ -39,9 +35,5 @@ class CoordinatesController extends Controller
 
             return $d;
         }
-
-        // Exemplo de uso:
-        $distancia = getDistanceFromLatLonInKm(51.5074, -0.1278, 40.7128, -74.0060);
-        echo "Distância: " . $distancia . " km";
     }
 }

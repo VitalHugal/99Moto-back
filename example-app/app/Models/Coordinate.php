@@ -6,30 +6,30 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Coordinates extends Model
+class Coordinate extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ["latitudine-1", "longitudine-1", "latitudine-2", "longitudine-2", "custom-1", "custom-2", "custom-3", "custom-4", "custom-5"];
-
+    protected $fillable = ["latitudine_1", "longitudine_1", "latitudine_2", "longitudine_2", "custom_1", "custom_2", "custom_3", "custom_4", "custom_5"];
+    protected $table = "99moto_coordinates";
 
     public function rules()
     {
         return [
-            "latitudine-1" => 'required',
-            "longitudine-1" => 'required',
-            "latitudine-2" => 'required',
-            "longitudine-2" => 'required',
+            "latitudine_1" => '',
+            "longitudine_1" => '',
+            "latitudine_2" => '',
+            "longitudine_2" => '',
         ];
     }
 
     public function feedback()
     {
         return [
-            'latitudine-1.required' => 'Campo latitude obrigátorio.',
-            'longitudine-1.required' => 'Campo longitude obrigátorio.',
-            'latitudine-2.required' => 'Campo latitude obrigátorio.',
-            'longitudine-2.required' => 'Campo longitude obrigátorio.',
+            'latitudine_1.required' => 'Campo latitude obrigátorio.',
+            'longitudine_1.required' => 'Campo longitude obrigátorio.',
+            'latitudine_2.required' => 'Campo latitude obrigátorio.',
+            'longitudine_2.required' => 'Campo longitude obrigátorio.',
         ];
     }
 }
