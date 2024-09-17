@@ -16,11 +16,11 @@ return new class extends Migration
             $table->id();
             $table->string("latitudine_user");
             $table->string("longitudine_user");
-            $table->string("custom_1");
-            $table->string("custom_2");
-            $table->string("custom_3");
-            $table->string("custom_4");
-            $table->string("custom_5");
+            $table->string("custom_1")->nullable();
+            $table->string("custom_2")->nullable();
+            $table->string("custom_3")->nullable();
+            $table->string("custom_4")->nullable();
+            $table->string("custom_5")->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

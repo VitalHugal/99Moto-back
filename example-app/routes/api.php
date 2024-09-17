@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserCoordinatesController;
 use App\Http\Controllers\CoordinatesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -12,4 +13,4 @@ Route::get('/user', function (Request $request) {
 Route::get("/verificar-coordenadas/{id}", [CoordinatesController::class, "verifyCoordinates"]);
 
 //cadastrar coordenadas users
-Route::post("/coordenadas-users", [CoordinatesController::class, "coordinatesUsers"]);
+Route::post("/coordenadas-users", [UserCoordinatesController::class, "coordinatesUsers"]);

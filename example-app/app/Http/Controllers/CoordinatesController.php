@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\VoucherCoordinate;
+use App\Models\UserCoordinate;
 
 class CoordinatesController extends Controller
 {
@@ -17,27 +18,19 @@ class CoordinatesController extends Controller
         $this->voucher_coordinate = $voucher_coordinate;
     }
 
-    public function coordinatesUsers(Request $request)
-    {
-        $coordinate = $request-> validate($this->voucher_coordinate->rulesCoordinatesUsers(), $this->voucher_coordinate->feedbackCoordinatesUsers());
-
-        $coordinate = $this->voucher_coordinate->create([
-            'custom_1' => $request->custom_1,
-            'custom_2' => $request->custom_2,
-        ]);
-
-        return response()->json($coordinate);
-    }
-
     public function verifyCoordinates(Request $request, $id)
     {
-        $coordinate = $this->voucher_coordinate->find($id);
 
-        $latUser = $coordinate->custom_1;
-        $lonUser = $coordinate->custom_2;
+        $coordinate = UserCoordinate::find($id);
 
+        $latUser = $coordinate->latitudine_user; 
+        $lonUser = $coordinate->longitudine_user; 
         
-        
+        function verifyDistanceVoucher()
+        {
+            
+        }
+
         // Função para calcular distância entre duas coordenadas
         function getDistanceFromLatLonInKm($lat1, $lon1, $lat2, $lon2)
         {
