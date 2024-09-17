@@ -12,12 +12,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('99moto_coordinates', function (Blueprint $table) {
+        Schema::create('vouchers_coordinates', function (Blueprint $table) {
             $table->id();
-            $table->string('latitudine_1');
-            $table->string('longitudine_1');
-            $table->string('latitudine_2');
-            $table->string('longitudine_2');
+            $table->string('latitudine_1')->nullable();
+            $table->string('longitudine_1')->nullable();
+            $table->string('latitudine_2')->nullable();
+            $table->string('longitudine_2')->nullable();
             $table->string('custom_1')->nullable();
             $table->string('custom_2')->nullable();
             $table->string('custom_3')->nullable();

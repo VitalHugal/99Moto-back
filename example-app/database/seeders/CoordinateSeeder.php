@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-use App\Models\Coordinate;
+use App\Models\VoucherCoordinate;
 
 class CoordinateSeeder extends Seeder
 {
@@ -15,10 +15,10 @@ class CoordinateSeeder extends Seeder
     public function run(): void
     {
         // Gerar 30.000 coordenadas aleatórias
-        Coordinate::factory(30000)->create();
+        VoucherCoordinate::factory(30000)->create();
 
         // Exemplo de criar uma coordenada com valores aleatórios
-        Coordinate::factory()->create([
+        VoucherCoordinate::factory()->create([
             'latitudine_1' => $this->generateRandomLatitude(),
             'latitudine_2' => $this->generateRandomLatitude(),
             'longitudine_1' => $this->generateRandomLongitude(),

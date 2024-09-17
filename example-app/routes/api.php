@@ -8,5 +8,8 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+//verificar coordenadas
+Route::get("/verificar-coordenadas/{id}", [CoordinatesController::class, "verifyCoordinates"]);
 
-Route::get("/verificar-coordenadas", [CoordinatesController::class, "verifyCoordinates"]);
+//cadastrar coordenadas users
+Route::post("/coordenadas-users", [CoordinatesController::class, "coordinatesUsers"]);

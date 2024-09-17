@@ -5,25 +5,45 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Coordinate;
+use App\Models\VoucherCoordinate;
 
 class CoordinatesController extends Controller
 {
 
-    protected $coordinate;
+    protected $voucher_coordinate;
 
-    public function __construct(Coordinate $coordinate)
+    public function __construct(VoucherCoordinate $voucher_coordinate)
     {
-        $this->coordinate = $coordinate;
+        $this->voucher_coordinate = $voucher_coordinate;
     }
-    
-    public function verifyCoordinates()
+
+    public function coordinatesUsers(Request $request)
     {
+        $coordinate = $request-> validate($this->voucher_coordinate->rulesCoordinatesUsers(), $this->voucher_coordinate->feedbackCoordinatesUsers());
+
+        $coordinate = $this->voucher_coordinate->create([
+            'custom_1' => $request->custom_1,
+            'custom_2' => $request->custom_2,
+        ]);
+
+        return response()->json($coordinate);
+    }
+
+    public function verifyCoordinates(Request $request, $id)
+    {
+        $coordinate = $this->voucher_coordinate->find($id);
+
+        $latUser = $coordinate->custom_1;
+        $lonUser = $coordinate->custom_2;
+
+        
+        
+        // Função para calcular distância entre duas coordenadas
         function getDistanceFromLatLonInKm($lat1, $lon1, $lat2, $lon2)
         {
             $R = 6371; // Raio da Terra em km
-            $dLat = deg2rad($lat2 - $lat1); // Converter diferença de latitude para radianos
-            $dLon = deg2rad($lon2 - $lon1); // Converter diferença de longitude para radianos
+            $dLat = deg2rad($lat2 - $lat1);
+            $dLon = deg2rad($lon2 - $lon1);
 
             $a = sin($dLat / 2) * sin($dLat / 2) +
                 cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
@@ -31,9 +51,37 @@ class CoordinatesController extends Controller
 
             $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
 
-            $d = $R * $c; // Distância em km
+            $distance = $R * $c; // Distância em km
 
-            return $d;
+            return $distance;
         }
+
+        // Função para verificar se a distância está dentro de um raio especificado
+        function isWithinRadius($lat1, $lon1, $lat2, $lon2, $radiusInMeters)
+        {
+            $distanceInKm = getDistanceFromLatLonInKm($lat1, $lon1, $lat2, $lon2);
+            $radiusInKm = $radiusInMeters / 1000; // Converter metros para km
+
+            return $distanceInKm <= $radiusInKm;
+        }
+
+        // Exemplo de uso
+        $lat1 = -23.523070712234667;
+        $lon1 = -46.70959537508676;
+        $lat2 = -23.522326088643396;
+        $lon2 = -46.70948214847006;
+
+        $distanceInMeters = getDistanceFromLatLonInKm(-23.523070712234667, -46.70959537508676, -23.522326088643396, -46.70948214847006) * 1000;
+
+        $distanceInMeters = getDistanceFromLatLonInKm($lat1, $lon1, $lat2, $lon2) * 1000;
+        $isWithinRadius = $distanceInMeters <= 100;
+
+        // Retornar os resultados
+        return response()->json([
+            'Distância em metros' => $distanceInMeters,
+            'Esta dentro dos 100 metros' => $isWithinRadius,
+
+        ]);
     }
+
 }
