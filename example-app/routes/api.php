@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\UserCoordinatesController;
-use App\Http\Controllers\CoordinatesController;
+use App\Http\Controllers\VoucherCoordinatesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -10,7 +10,10 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 //verificar coordenadas
-Route::get("/verificar-coordenadas/{id}", [CoordinatesController::class, "verifyCoordinates"]);
+Route::get("/verificar-coordenadas/{id}", [VoucherCoordinatesController::class, "verifyCoordinates"]);
+
+//inserir vouchers
+Route::post("/insert-vouchers", [VoucherCoordinatesController::class, "insertVoucherCoordinates"]);
 
 //cadastrar coordenadas users
 Route::post("/coordenadas-users", [UserCoordinatesController::class, "coordinatesUsers"]);
