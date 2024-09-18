@@ -41,8 +41,8 @@ class VoucherCoordinatesController extends Controller
         $latUser = $coordinate->latitudine_user;
         $lonUser = $coordinate->longitudine_user;
 
-        // $latUserformat = number_format($latUser, 2);
-        // $lonUserformat = number_format($lonUser, 2);
+        // // $latUserformat = number_format($latUser, 2);
+        // // $lonUserformat = number_format($lonUser, 2);
 
         // Formata a latitude e longitude sem arredondar
         $latUserformat = substr($latUser, 0, strpos($latUser, '.') + 3); // 2 casas decimais
@@ -70,16 +70,17 @@ class VoucherCoordinatesController extends Controller
         // $radiusInKm = 100 / 1000; // 100 metros convertido para quilômetros
 
         // Buscar todas as coordenadas no banco de dados
-        //$AllVouchersCoordinates = VoucherCoordinate::all();
+        $AllVouchersCoordinates = VoucherCoordinate::all();
+        
         // $getAllLonVouchersCoordinates = VoucherCoordinate::where('longitudine_1', 'LIKE', $lonUserformat . '%')->get();
 
-        $voucherLocalization = VoucherCoordinate::where('latitudine_1', 'LIKE', $latUserformat . '%')
-            ->where('longitudine_1', 'LIKE', $lonUserformat . '%')
-            ->get();
+        // $voucherLocalization = VoucherCoordinate::where('latitudine_1', 'LIKE', $latUserformat . '%')
+        //     ->where('longitudine_1', 'LIKE', $lonUserformat . '%')
+        //     ->get();
 
         $locationsWithinRadius = [];
 
-        foreach ($voucherLocalization as $location) {
+        foreach ($AllVouchersCoordinates as $location) {
             $latDb = $location->latitudine_1;
             $lonDb = $location->longitudine_1;
 
@@ -99,7 +100,7 @@ class VoucherCoordinatesController extends Controller
             }
         }
 
-        // Se encontrar alguma localização
+        // Se encontrar localização
         if (!empty($locationsWithinRadius)) {
             return response()->json([
                 'status' => 'success',

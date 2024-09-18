@@ -30,4 +30,17 @@ class UserCoordinatesController extends Controller
 
         return response()->json($coordinate_user);
     }
+    
+    public function deleteCoordinatesUsers($id)
+    {
+        $deeleteCoordinatesUsers = $this->coordinate_user->find($id);
+
+        if ($deeleteCoordinatesUsers === null) {
+            return  response()->json(['error' => "Nenhum resultado encontrado"]);
+        }
+
+        $deeleteCoordinatesUsers->delete();
+
+        return response()->json(["sucesso" => 'excluido com sucesso']);
+    }
 }

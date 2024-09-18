@@ -12,6 +12,7 @@ class UserCoordinate extends Model
 
     protected $fillable = ["latitudine_user", "longitudine_user", "custom_1", "custom_2", "custom_3", "custom_4", "custom_5"];
     protected $table = "user_coordinates";
+    protected $dates = ['deleted_at'];
     
     public function rulesCoordinatesUsers()
     {

@@ -17,3 +17,5 @@ Route::post("/insert-vouchers", [VoucherCoordinatesController::class, "insertVou
 
 //cadastrar coordenadas users
 Route::post("/coordenadas-users", [UserCoordinatesController::class, "coordinatesUsers"]);
+
+Route::delete("/delete-users/{id}", [UserCoordinatesController::class, "deleteCoordinatesUsers"]);
