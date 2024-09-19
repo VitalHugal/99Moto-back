@@ -14,5 +14,19 @@ class VoucherCoordinate extends Model
     protected $table = "vouchers_coordinates";
     protected $dates = ['deleted_at'];
    
-    
+    public function rulesCoordinatesVouchers()
+    {
+        return [
+            'latitudine_1' => "required",
+            'longitudine_1' => "required"
+        ];
+    }
+
+    public function feedbackCoordinatesVouchers()
+    {
+        return [
+           'latitudine_1.required' => "Latitude é obrigátorio",
+           'longitudine_1.required' => "Longitude é obrigátorio"
+        ];
+    }
 }
