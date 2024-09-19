@@ -36,11 +36,11 @@ class UserCoordinatesController extends Controller
         $deeleteCoordinatesUsers = $this->coordinate_user->find($id);
 
         if ($deeleteCoordinatesUsers === null) {
-            return  response()->json(['error' => "Nenhum resultado encontrado"]);
+            return  response()->json(['error' => "Nenhum resultado encontrado."]);
         }
 
         $deeleteCoordinatesUsers->delete();
 
-        return response()->json(["sucesso" => 'excluido com sucesso']);
+        return response()->json(["sucesso" => 'Coordenadas do usuário excluida com sucesso.']);
     }
 }

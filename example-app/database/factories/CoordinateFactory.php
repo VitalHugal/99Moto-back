@@ -2,12 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\Coordinate;
+use App\Models\VoucherCoordinate;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CoordinateFactory extends Factory
 {
-    protected $model = Coordinate::class;
+    protected $model = VoucherCoordinate::class;
 
     public function definition()
     {

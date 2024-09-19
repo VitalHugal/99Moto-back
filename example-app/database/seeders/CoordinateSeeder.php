@@ -15,7 +15,7 @@ class CoordinateSeeder extends Seeder
     public function run(): void
     {
         // Gerar 30.000 coordenadas aleatórias
-        VoucherCoordinate::factory(30000)->create();
+        VoucherCoordinate::factory(10000)->create();
 
         // Exemplo de criar uma coordenada com valores aleatórios
         VoucherCoordinate::factory()->create([

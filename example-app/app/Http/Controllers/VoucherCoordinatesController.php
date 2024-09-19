@@ -72,8 +72,6 @@ class VoucherCoordinatesController extends Controller
 
         $results = DB::select('CALL GetAllVoucherCoordinates()');
 
-        //dd($results);
-
         //$voucherLocalization = VoucherCoordinate::where('latitudine_1', 'LIKE', $latUserformat . '%')
         //    ->where('longitudine_1', 'LIKE', $lonUserformat . '%')
         //    ->get();
