@@ -13,9 +13,11 @@ return new class extends Migration
     public function up(): void
     {
         DB::unprepared(
-            'CREATE PROCEDURE  GetAllVoucherCoordinates()
+            'CREATE PROCEDURE GetAllVoucherCoordinates()
             BEGIN
-                SELECT * FROM vouchers_coordinates;
+                SELECT * 
+                FROM vouchers_coordinates
+                WHERE deleted_at IS NULL;
             END;'
         );
     }

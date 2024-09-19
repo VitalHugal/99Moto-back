@@ -26,7 +26,7 @@ class VoucherCoordinatesController extends Controller
             $this->voucher_coordinate->rulesCoordinatesVouchers(),
             $this->voucher_coordinate->feedbackCoordinatesVouchers()
         );
-        
+
         $voucher_coordinate = $this->voucher_coordinate->create([
             'latitudine_1' => $request->latitudine_1,
             'longitudine_1' => $request->longitudine_1,
@@ -71,7 +71,7 @@ class VoucherCoordinatesController extends Controller
         //$AllVouchersCoordinates = VoucherCoordinate::all();
 
         $results = DB::select('CALL GetAllVoucherCoordinates()');
-        
+
         //dd($results);
 
         //$voucherLocalization = VoucherCoordinate::where('latitudine_1', 'LIKE', $latUserformat . '%')
@@ -90,7 +90,7 @@ class VoucherCoordinatesController extends Controller
             // Verifica se a distância está dentro do limite definido em radiusInKm
             if (
                 $distanceInKm
-                 <= $radiusInKm
+                <= $radiusInKm
             ) {
                 $locationsWithinRadius[] = [
                     'id' => $location->id,
@@ -102,19 +102,37 @@ class VoucherCoordinatesController extends Controller
         // Se encontrar localização
         if (!empty($locationsWithinRadius)) {
             return response()->json([
-                'status' => 'success',
                 'message' => $locationsWithinRadius,
             ]);
         } else {
             return response()->json([
-                'status' => 'error',
-                'message' => 'Nenhuma localização encontrada dentro de 100 metros'
+                'error' => 'Nenhuma localização encontrada dentro de 100 metros.'
             ]);
         }
     }
 
-    public function userGetVoucher()
+    public function userGetVoucher($id)
     {
-        
+        $voucher = $this->voucher_coordinate->find($id);
+
+        if ($voucher === null) {
+            return response()->json(['error' => "Nenhum resultado encontrado."]);
+        }
+
+        // Guardar os detalhes do voucher antes de deletar
+        $voucherDetails = [
+            'id' => $voucher->id,
+            'latitudine_1' => $voucher->latitudine_1,
+            'longitudine_1' => $voucher->longitudine_1
+        ];
+
+        // Deletar o voucher
+        $voucher->delete();
+
+        // Retornar o voucher para o usuário
+        return response()->json([
+            'message' => 'Voucher obtido com sucesso.',
+            'voucher' => $voucherDetails
+        ]);
     }
 }
