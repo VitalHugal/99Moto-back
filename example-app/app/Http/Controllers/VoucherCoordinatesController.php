@@ -65,7 +65,7 @@ class VoucherCoordinatesController extends Controller
         }
 
         // Definindo o raio máximo (100 metros)
-        $radiusInKm = 1000 / 1000; // 100 metros convertido para quilômetros
+        $radiusInKm = 100 / 1000; // 100 metros convertido para quilômetros
 
         //Buscar todas as coordenadas no banco de dados
         //$AllVouchersCoordinates = VoucherCoordinate::all();
