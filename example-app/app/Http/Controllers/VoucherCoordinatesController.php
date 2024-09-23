@@ -41,7 +41,7 @@ class VoucherCoordinatesController extends Controller
         $coordinate = UserCoordinate::find($id);
 
         if ($coordinate === null) {
-            return response()->json(['message' => 'Falha ao encontrar localização do usuário.'], 404);
+            return response()->json(['error' => 'Falha ao encontrar localização do usuário.'], 404);
         }
 
         // Pega a latitude e longitude do usuário
