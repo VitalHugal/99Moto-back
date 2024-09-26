@@ -38,7 +38,7 @@ class VoucherCoordinatesController extends Controller
         return response()->json($voucher_coordinate);
     }
 
-    public function getVouchersCoordinates($id)
+    public function getVouchers($id)
     {
         // Encontra as coordenadas do usuário
         $coordinate = UserCoordinate::find($id);
