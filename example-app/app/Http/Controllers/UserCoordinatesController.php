@@ -24,8 +24,8 @@ class UserCoordinatesController extends Controller
         );
 
         $coordinate_user = $this->coordinate_user->create([
-            'latitudine_user' => $request->latitudine_user,
-            'longitudine_user' => $request->longitudine_user,
+            'user_coordinates_latitudine' => $request->user_coordinates_latitudine,
+            'user_coordinates_longitudine' => $request->user_coordinates_longitudine,
         ]);
 
         return response()->json($coordinate_user);

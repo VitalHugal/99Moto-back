@@ -14,8 +14,8 @@ return new class extends Migration
     {
         Schema::create('user_coordinates', function (Blueprint $table) {
             $table->id();
-            $table->string("latitudine_user");
-            $table->string("longitudine_user");
+            $table->string('user_coordinates_latitudine');
+            $table->string('user_coordinates_longitudine');
             $table->string("custom_1")->nullable();
             $table->string("custom_2")->nullable();
             $table->string("custom_3")->nullable();

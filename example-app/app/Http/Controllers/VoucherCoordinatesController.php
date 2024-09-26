@@ -30,7 +30,16 @@ class VoucherCoordinatesController extends Controller
         $voucher_coordinate = $this->voucher_coordinate->create([
             'latitudine_1' => $request->latitudine_1,
             'longitudine_1' => $request->longitudine_1,
+            'qtn_cupons' => $request->qtn_cupons,
+            'cupom' => $request->cupom,
         ]);
+
+        if (!$this->voucher_coordinate->create) {
+            return response()->json([
+                'success' => false, 
+                'message' => 'Houve algum erro na insersão do voucher.'
+            ]);
+        }
 
         return response()->json($voucher_coordinate);
     }
@@ -41,12 +50,15 @@ class VoucherCoordinatesController extends Controller
         $coordinate = UserCoordinate::find($id);
 
         if ($coordinate === null) {
-            return response()->json(['error' => 'Falha ao encontrar localização do usuário.'], 404);
+            return response()->json([
+                'success' => false, 
+                'message' => 'Nenhum resultado encontrado'
+            ]);
         }
 
         // Pega a latitude e longitude do usuário
-        $latUser = $coordinate->latitudine_user;
-        $lonUser = $coordinate->longitudine_user;
+        $latUser = $coordinate->user_coordinates_latitudine;
+        $lonUser = $coordinate->user_coordinates_longitudine;
 
         // Função para calcular a distância entre duas coordenadas
         function getDistanceFromLatLonInKm($lat1, $lon1, $lat2, $lon2)
@@ -100,11 +112,13 @@ class VoucherCoordinatesController extends Controller
         // Se encontrar localização
         if (!empty($locationsWithinRadius)) {
             return response()->json([
-                'message' => $locationsWithinRadius,
+                    'success' => true,
+                    'message' => $locationsWithinRadius,
             ]);
         } else {
             return response()->json([
-                'error' => 'Nenhuma localização encontrada dentro de 100 metros.'
+                'success' => false, 
+                'message' => 'Nenhum resultado encontrado'
             ]);
         }
     }
@@ -114,16 +128,23 @@ class VoucherCoordinatesController extends Controller
         $voucher = $this->voucher_coordinate->find($id);
 
         if ($voucher === null) {
-            return response()->json(['error' => "Nenhum resultado encontrado."]);
+            return response()->json([
+                'success' => false, 
+                'message' => 'Nenhum resultado encontrado'
+            ]);
         }
+
+        $qtn_voucher = $voucher->qtn_cupons;
 
         // Guardar os detalhes do voucher antes de deletar
         $voucherDetails = [
             'id' => $voucher->id,
             'latitudine_1' => $voucher->latitudine_1,
-            'longitudine_1' => $voucher->longitudine_1
+            'longitudine_1' => $voucher->longitudine_1,
+            'cupom' => $voucher->cupom,
         ];
 
+        dd();
         // Deletar o voucher
         $voucher->delete();
 

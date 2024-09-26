@@ -16,10 +16,8 @@ return new class extends Migration
             $table->id();
             $table->string('latitudine_1');
             $table->string('longitudine_1');
-            $table->string('latitudine_2')->nullable();
-            $table->string('longitudine_2')->nullable();
-            $table->string('custom_1')->nullable();
-            $table->string('custom_2')->nullable();
+            $table->integer('qtn_cupons');
+            $table->string('cupom');
             $table->string('custom_3')->nullable();
             $table->string('custom_4')->nullable();
             $table->string('custom_5')->nullable();
@@ -33,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('99moto');
+        Schema::dropIfExists('vouchers_coordinates');
     }
 };
