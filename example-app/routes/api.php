@@ -10,13 +10,10 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 //pegar os voucher proximos a você
-Route::get("/verificar-coordenadas/{id}", [VoucherCoordinatesController::class, "verifyCoordinates"]);
+Route::get("/get-vouchers/{id}", [VoucherCoordinatesController::class, "getVouchersCoordinates"]);
 
 //inserir vouchers
 Route::post("/insert-vouchers", [VoucherCoordinatesController::class, "insertVoucherCoordinates"]);
-
-//pegar voucher e excluir para não ser possível utiliza-lo novamente
-Route::delete("/user-get-voucher/{id}", [VoucherCoordinatesController::class, "userGetVoucher"]);
 
 // -------------------------------------------------
 
