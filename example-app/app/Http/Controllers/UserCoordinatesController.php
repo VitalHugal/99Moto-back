@@ -88,11 +88,6 @@ class UserCoordinatesController extends Controller
             if ($distanceInKm <= $radiusInKm) {
                 $locationsWithinRadius[] = [
                     'id' => $location->id,
-                    'latitudine_1' => $location->latitudine_1,
-                    'longitudine_1' => $location->longitudine_1,
-                    'voucher' => $location->voucher,
-                    'qtn_voucher' => $location->qtn_voucher,
-                    'qtn_voucher_recovered' => $location->qtn_voucher_recovered,
                     'distance_in_meters' => $distanceInKm * 1000, // Convertendo para metros
                 ];
             }
@@ -108,7 +103,7 @@ class UserCoordinatesController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'usuário em região NÂO promocional',
+                'message' => 'usuário em região NÃO promocional',
                 'idUser' => $idUser,
             ]);
         }
