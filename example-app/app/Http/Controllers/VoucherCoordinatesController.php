@@ -45,6 +45,7 @@ class VoucherCoordinatesController extends Controller
 
         $participation = Participation::find($id);
 
+        //se não encontrado o id informado na requisição
         if ($coordinate === null) {
             return response()->json([
                 'success' => false,
@@ -69,23 +70,20 @@ class VoucherCoordinatesController extends Controller
 
             $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
 
-            return $R * $c; // Distância em km
+            // Distância em km
+            return $R * $c;
         }
 
-        // Definindo o raio máximo (100 metros)
-        $radiusInKm = 100 / 1000; // 100 metros convertido para quilômetros
+        // Definindo o raio máximo 100 metros
+        $radiusInKm = 100 / 1000;
 
-        //Buscar todas as coordenadas no banco de dados
-        //$AllVouchersCoordinates = VoucherCoordinate::all();
-
+        // procedures para retornar todos os voucher do banco de dados
         $results = DB::select('CALL GetAllVoucherCoordinates()');
 
-        //$voucherLocalization = VoucherCoordinate::where('latitudine_1', 'LIKE', $latUserformat . '%')
-        //    ->where('longitudine_1', 'LIKE', $lonUserformat . '%')
-        //    ->get();
-
+        // iniciando a variavel
         $locationsWithinRadius = [];
 
+        // foreach para recuperar as latitudes e longitudes de todos os resultados do banco de dados
         foreach ($results as $location) {
             $latDb = $location->latitudine_1;
             $lonDb = $location->longitudine_1;
@@ -94,10 +92,7 @@ class VoucherCoordinatesController extends Controller
             $distanceInKm = getDistanceFromLatLonInKm($latUser, $lonUser, $latDb, $lonDb);
 
             // Verifica se a distância está dentro do limite definido em radiusInKm
-            if (
-                $distanceInKm
-                <= $radiusInKm
-            ) {
+            if ($distanceInKm <= $radiusInKm) {
                 $locationsWithinRadius[] = [
                     'id' => $location->id,
                     'latitudine_1' => $location->latitudine_1,
@@ -110,64 +105,37 @@ class VoucherCoordinatesController extends Controller
             }
         }
 
+        // recuperando total de vouchers
         $qtn_voucher = array_column($locationsWithinRadius, 'qtn_voucher');
+        // recuperando total de vouchers recuperados
         $qtn_voucher_recovered = array_column($locationsWithinRadius, 'qtn_voucher_recovered');
-        
-        if ($qtn_voucher_recovered === $qtn_voucher) {
+        // recupera o voucher 
+        $voucher = array_column($locationsWithinRadius, 'voucher');
+        // recupera o id do voucher
+        $idVoucher = array_column($locationsWithinRadius, 'id');
+
+        // Se houver voucher no raio de 100 metros do usuario
+        if (empty($locationsWithinRadius) || $qtn_voucher_recovered >= $qtn_voucher) {
+
+            // adiciona na tabela participação que voucher NÂO foi resgatado
+            Participation::where('id', $id)->update(['recovered_voucher' => 0]);
+
             return response()->json([
                 'success' => false,
-                'message' => 'Nenhum resultado encontrado.'
+                'message' => 'Não esta na area promocional ou vouchers esgotados.'
             ]);
         }
-
-        $voucher = array_column($locationsWithinRadius, 'voucher');        
-        
-        // Se encontrar localização
         if (!empty($locationsWithinRadius)) {
+            // adiciona na tabela participação que voucher foi resgatado
+            Participation::where('id', $id)->update(['recovered_voucher' => 1]);
 
-            $participation = Participation::where('id', $id)->update(['recovered_voucher' => 1]);
+            // adiciona na qunatidade de voucher resgatados mais um 
+            VoucherCoordinate::where('id', $idVoucher)->increment('qtn_voucher_recovered');
 
             return response()->json([
                 'success' => true,
                 'message' => $voucher,
             ]);
-        } else {
-
-            $participation = Participation::where('id', $id)->update(['recovered_voucher' => 0]);
-
-            return response()->json([
-                'success' => false,
-                'message' => 'Nenhum resultado encontrado'
-            ]);
         }
-    }
-
-    public function userGetVoucher($id)
-    {
-        $voucher = $this->voucher_coordinate->find($id);
-
-        if ($voucher === null) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Nenhum resultado encontrado'
-            ]);
-        }
-
-        if ($voucher->qtn_cupons_recovered === $voucher->qtn_cupons) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Vouchers se esgotaram nessa região.'
-            ]);
-        }
-
-        // dd();
-        // // Deletar o voucher
-        // $voucher->delete();
-
-        // // Retornar o voucher para o usuário
-        // return response()->json([
-        //     'message' => 'Voucher obtido com sucesso.',
-        //     'voucher' => $voucherDetails
-        // ]);
     }
 }
