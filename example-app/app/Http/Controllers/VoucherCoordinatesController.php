@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Models\VoucherCoordinate;
 use App\Models\UserCoordinate;
+use App\Models\Participation;
 
 use Illuminate\Support\Facades\DB;
 
@@ -33,13 +34,6 @@ class VoucherCoordinatesController extends Controller
             'qtn_cupons' => $request->qtn_cupons,
             'cupom' => $request->cupom,
         ]);
-
-        if (!$this->voucher_coordinate->create) {
-            return response()->json([
-                'success' => false, 
-                'message' => 'Houve algum erro na insersão do voucher.'
-            ]);
-        }
 
         return response()->json($voucher_coordinate);
     }
@@ -104,10 +98,13 @@ class VoucherCoordinatesController extends Controller
             ) {
                 $locationsWithinRadius[] = [
                     'id' => $location->id,
-                    'distance_in_meters' => $distanceInKm * 1000 // Convertendo para metros
+                    'cupom' => $location->cupom,
+                    'distance_in_meters' => $distanceInKm * 1000, // Convertendo para metros
+                    //'qtn_cupons' => $location->qtn_cupons,
                 ];
             }
         }
+
 
         // Se encontrar localização
         if (!empty($locationsWithinRadius)) {
@@ -125,6 +122,7 @@ class VoucherCoordinatesController extends Controller
 
     public function userGetVoucher($id)
     {
+
         $voucher = $this->voucher_coordinate->find($id);
 
         if ($voucher === null) {
@@ -134,24 +132,26 @@ class VoucherCoordinatesController extends Controller
             ]);
         }
 
-        $qtn_voucher = $voucher->qtn_cupons;
+        // if () {
+        //     # code...
+        // }
 
-        // Guardar os detalhes do voucher antes de deletar
-        $voucherDetails = [
-            'id' => $voucher->id,
-            'latitudine_1' => $voucher->latitudine_1,
-            'longitudine_1' => $voucher->longitudine_1,
-            'cupom' => $voucher->cupom,
-        ];
+        // // Guardar os detalhes do voucher antes de deletar
+        // $voucherDetails = [
+        //     'id' => $voucher->id,
+        //     'latitudine_1' => $voucher->latitudine_1,
+        //     'longitudine_1' => $voucher->longitudine_1,
+        //     'cupom' => $voucher->cupom,
+        // ];
 
-        dd();
-        // Deletar o voucher
-        $voucher->delete();
+        // dd();
+        // // Deletar o voucher
+        // $voucher->delete();
 
-        // Retornar o voucher para o usuário
-        return response()->json([
-            'message' => 'Voucher obtido com sucesso.',
-            'voucher' => $voucherDetails
-        ]);
+        // // Retornar o voucher para o usuário
+        // return response()->json([
+        //     'message' => 'Voucher obtido com sucesso.',
+        //     'voucher' => $voucherDetails
+        // ]);
     }
 }
