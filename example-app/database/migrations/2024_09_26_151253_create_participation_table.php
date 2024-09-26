@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('user_participation_latitudine', 255);
             $table->string('user_participation_longitudine', 255);
-            $table->boolean('recovered_voucher');
+            $table->boolean('recovered_voucher')->default(value: 0);
             $table->timestamps();
             $table->softDeletes();
         });

@@ -17,8 +17,8 @@ class UserCoordinate extends Model
     public function rulesCoordinatesUsers()
     {
         return [
-            'user_coordinates_latitudine' => "required",
-            'user_coordinates_longitudine' => "required"
+            'user_coordinates_latitudine' => "required|max:255",
+            'user_coordinates_longitudine' => "required|max:255"
         ];
     }
 
@@ -26,7 +26,9 @@ class UserCoordinate extends Model
     {
         return [
            'user_coordinates_latitudine.required' => "Campo obrigátorio",
-           'user_coordinates_longitudine.required' => "Campo obrigátorio"
+           'user_coordinates_latitudine.max' => "Só é possível preencher o campo com até 255 carateres.",
+           'user_coordinates_longitudine.required' => "Campo obrigátorio",
+           'user_coordinates_longitudine.required' => "Só é possível preencher o campo com até 255 carateres.",
         ];
     }
 }

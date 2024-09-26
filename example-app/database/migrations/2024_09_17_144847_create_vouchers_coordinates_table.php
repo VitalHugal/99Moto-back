@@ -16,8 +16,9 @@ return new class extends Migration
             $table->id();
             $table->string('latitudine_1');
             $table->string('longitudine_1');
-            $table->integer('qtn_cupons');
-            $table->string('cupom');
+            $table->integer('qtn_voucher');
+            $table->integer('qtn_voucher_recovered')->default(value: 0);
+            $table->string('voucher');
             $table->string('custom_3')->nullable();
             $table->string('custom_4')->nullable();
             $table->string('custom_5')->nullable();

@@ -31,8 +31,8 @@ class VoucherCoordinatesController extends Controller
         $voucher_coordinate = $this->voucher_coordinate->create([
             'latitudine_1' => $request->latitudine_1,
             'longitudine_1' => $request->longitudine_1,
-            'qtn_cupons' => $request->qtn_cupons,
-            'cupom' => $request->cupom,
+            'qtn_voucher' => $request->qtn_voucher,
+            'voucher' => $request->voucher,
         ]);
 
         return response()->json($voucher_coordinate);
@@ -43,9 +43,11 @@ class VoucherCoordinatesController extends Controller
         // Encontra as coordenadas do usuário
         $coordinate = UserCoordinate::find($id);
 
+        $participation = Participation::find($id);
+
         if ($coordinate === null) {
             return response()->json([
-                'success' => false, 
+                'success' => false,
                 'message' => 'Nenhum resultado encontrado'
             ]);
         }
@@ -98,23 +100,43 @@ class VoucherCoordinatesController extends Controller
             ) {
                 $locationsWithinRadius[] = [
                     'id' => $location->id,
-                    'cupom' => $location->cupom,
+                    'latitudine_1' => $location->latitudine_1,
+                    'longitudine_1' => $location->longitudine_1,
+                    'voucher' => $location->voucher,
+                    'qtn_voucher' => $location->qtn_voucher,
+                    'qtn_voucher_recovered' => $location->qtn_voucher_recovered,
                     'distance_in_meters' => $distanceInKm * 1000, // Convertendo para metros
-                    //'qtn_cupons' => $location->qtn_cupons,
                 ];
             }
         }
 
+        $qtn_voucher = array_column($locationsWithinRadius, 'qtn_voucher');
+        $qtn_voucher_recovered = array_column($locationsWithinRadius, 'qtn_voucher_recovered');
+        
+        if ($qtn_voucher_recovered === $qtn_voucher) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Nenhum resultado encontrado.'
+            ]);
+        }
 
+        $voucher = array_column($locationsWithinRadius, 'voucher');        
+        
         // Se encontrar localização
         if (!empty($locationsWithinRadius)) {
+
+            $participation = Participation::where('id', $id)->update(['recovered_voucher' => 1]);
+
             return response()->json([
-                    'success' => true,
-                    'message' => $locationsWithinRadius,
+                'success' => true,
+                'message' => $voucher,
             ]);
         } else {
+
+            $participation = Participation::where('id', $id)->update(['recovered_voucher' => 0]);
+
             return response()->json([
-                'success' => false, 
+                'success' => false,
                 'message' => 'Nenhum resultado encontrado'
             ]);
         }
@@ -122,27 +144,21 @@ class VoucherCoordinatesController extends Controller
 
     public function userGetVoucher($id)
     {
-
         $voucher = $this->voucher_coordinate->find($id);
 
         if ($voucher === null) {
             return response()->json([
-                'success' => false, 
+                'success' => false,
                 'message' => 'Nenhum resultado encontrado'
             ]);
         }
 
-        // if () {
-        //     # code...
-        // }
-
-        // // Guardar os detalhes do voucher antes de deletar
-        // $voucherDetails = [
-        //     'id' => $voucher->id,
-        //     'latitudine_1' => $voucher->latitudine_1,
-        //     'longitudine_1' => $voucher->longitudine_1,
-        //     'cupom' => $voucher->cupom,
-        // ];
+        if ($voucher->qtn_cupons_recovered === $voucher->qtn_cupons) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Vouchers se esgotaram nessa região.'
+            ]);
+        }
 
         // dd();
         // // Deletar o voucher
