@@ -13,6 +13,11 @@ class VoucherCoordinate extends Model
     protected $fillable = ["latitudine_1", "longitudine_1", "qtn_voucher", "voucher", "qtn_voucher_recovered", "custom_3", "custom_4", "custom_5"];
     protected $table = "vouchers_coordinates";
     protected $dates = ['deleted_at'];
+
+    public function voucherCoordinates()
+    {
+        return $this->hasMany(Voucher::class);
+    }
    
     public function rulesCoordinatesVouchers()
     {

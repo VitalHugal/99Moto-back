@@ -18,12 +18,14 @@ return new class extends Migration
             $table->string('longitudine_1');
             $table->integer('qtn_voucher');
             $table->integer('qtn_voucher_recovered')->default(value: 0);
-            $table->string('voucher');
+            $table->unsignedBigInteger('voucher_id');
             $table->string('custom_3')->nullable();
             $table->string('custom_4')->nullable();
             $table->string('custom_5')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('voucher_id')->references('id')->on('vouchers')->onDelete('cascade');
         });
     }
 
