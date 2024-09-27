@@ -14,10 +14,6 @@ class VoucherCoordinate extends Model
     protected $table = "vouchers_coordinates";
     protected $dates = ['deleted_at'];
 
-    public function voucherCoordinates()
-    {
-        return $this->hasMany(Voucher::class);
-    }
    
     public function rulesCoordinatesVouchers()
     {
