@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 
 use App\Http\Controllers\Controller;
+use App\Models\NightInCities;
 use App\Models\Participation;
 use Illuminate\Http\Request;
 
@@ -23,9 +24,48 @@ class UserCoordinatesController extends Controller
 
     public function coordinatesUsers(Request $request)
     {
+        $info_latitudine = $request->user_coordinates_latitudine;
+        $info_longitudine = $request->user_coordinates_longitudine;
+        $local_time = $request->local_time;
+
+        $info_latitudine_formated = substr($info_latitudine, 0, 3);
+        $info_longitudine_formated = substr($info_longitudine, 0, 3);
+
+        $verifyExistsCoordinates = NightInCities::where('city_latitudine', 'LIKE', $info_latitudine_formated . '%')
+            ->where('city_longitudine', 'LIKE', $info_longitudine_formated . '%')
+            ->get();
+
+        // Verificando se a coleção está vazia
+        if ($verifyExistsCoordinates->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Nenhuma localização encontrada',
+            ]);
+        }
+
+        $nightCitie = [];
+
+        foreach ($verifyExistsCoordinates as $city) {
+            $nightCitie[] = $city->night;
+        }
+
+        $night = $nightCitie[0];
+
+        // Convertendo as strings de horário para objetos de data/hora
+        $local_time = \Carbon\Carbon::createFromFormat('H:i:s', $local_time);
+        $nightTime = \Carbon\Carbon::createFromFormat('H:i:s', $night);
+
+        // Verificando se a hora local é maior ou igual à hora de anoitecer
+        if ($local_time < $nightTime) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Não anoiteceu ainda.',
+            ]);
+        }
+        
         $coordinate_user = $request->validate(
-            $this->coordinate_user->rulesCoordinatesUsers(),
-            $this->coordinate_user->feedbackCoordinatesUsers()
+            $this->coordinate_user->rulesCoordinatesUsers2(),
+            $this->coordinate_user->feedbackCoordinatesUsers2(),
         );
 
         $participation = $request->validate(
@@ -36,6 +76,7 @@ class UserCoordinatesController extends Controller
         $coordinate_user = $this->coordinate_user->create([
             'user_coordinates_latitudine' => $request->user_coordinates_latitudine,
             'user_coordinates_longitudine' => $request->user_coordinates_longitudine,
+            'local_time' => $request->local_time,
         ]);
 
         $participation = $this->participation->create([
@@ -43,7 +84,7 @@ class UserCoordinatesController extends Controller
             'user_participation_longitudine' => $request->user_coordinates_longitudine,
         ]);
 
-        $idUser =$coordinate_user->id;
+        $idUser = $coordinate_user->id;
 
         // Pega a latitude e longitude do usuário
         $latUser = $coordinate_user->user_coordinates_latitudine;
@@ -93,8 +134,8 @@ class UserCoordinatesController extends Controller
             }
         }
 
-         // Se houver voucher no raio de 100 metros do usuario
-         if (!empty($locationsWithinRadius)) {
+        // Se houver voucher no raio de 100 metros do usuario
+        if (!empty($locationsWithinRadius)) {
             return response()->json([
                 'success' => true,
                 'message' => 'usuário em região promocional',

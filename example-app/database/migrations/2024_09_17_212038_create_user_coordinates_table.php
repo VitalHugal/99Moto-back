@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('user_coordinates_latitudine');
             $table->string('user_coordinates_longitudine');
-            $table->string("custom_1")->nullable();
+            $table->string("local_time");
             $table->string("custom_2")->nullable();
             $table->string("custom_3")->nullable();
             $table->string("custom_4")->nullable();
