@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\VoucherCoordinate;
 use App\Models\UserCoordinate;
 use App\Models\Participation;
-
+use App\Models\Voucher;
 use Illuminate\Support\Facades\DB;
 
 class VoucherCoordinatesController extends Controller
@@ -31,8 +31,7 @@ class VoucherCoordinatesController extends Controller
         $voucher_coordinate = $this->voucher_coordinate->create([
             'latitudine_1' => $request->latitudine_1,
             'longitudine_1' => $request->longitudine_1,
-            'qtn_voucher' => $request->qtn_voucher,
-            'voucher' => $request->voucher,
+            'voucher_id' => $request->voucher_id,
         ]);
 
         return response()->json($voucher_coordinate);
@@ -97,25 +96,15 @@ class VoucherCoordinatesController extends Controller
                     'id' => $location->id,
                     'latitudine_1' => $location->latitudine_1,
                     'longitudine_1' => $location->longitudine_1,
-                    'voucher' => $location->voucher,
-                    'qtn_voucher' => $location->qtn_voucher,
+                    'voucher_id' => $location->voucher_id,
                     'qtn_voucher_recovered' => $location->qtn_voucher_recovered,
                     'distance_in_meters' => $distanceInKm * 1000, // Convertendo para metros
                 ];
             }
         }
 
-        // recuperando total de vouchers
-        $qtn_voucher = array_column($locationsWithinRadius, 'qtn_voucher');
-        // recuperando total de vouchers recuperados
-        $qtn_voucher_recovered = array_column($locationsWithinRadius, 'qtn_voucher_recovered');
-        // recupera o voucher 
-        $voucher = array_column($locationsWithinRadius, 'voucher');
-        // recupera o id do voucher
-        $idVoucher = array_column($locationsWithinRadius, 'id');
-
-        // Se houver voucher no raio de 100 metros do usuario
-        if (empty($locationsWithinRadius) || $qtn_voucher_recovered >= $qtn_voucher) {
+        // Se não houver voucher no raio de 100 metros do usuario ou vouchers esgostados
+        if (empty($locationsWithinRadius)) {
 
             // adiciona na tabela participação que voucher NÂO foi resgatado
             Participation::where('id', $id)->update(['recovered_voucher' => 0]);
@@ -125,6 +114,20 @@ class VoucherCoordinatesController extends Controller
                 'message' => 'Não esta na area promocional ou vouchers esgotados.'
             ]);
         }
+
+        // recuperando total de vouchers recuperados
+        $qtn_voucher_recovered = array_column($locationsWithinRadius, 'qtn_voucher_recovered');
+
+        // recupera o primeiro voucher 
+        $voucher = array_column($locationsWithinRadius, 'voucher_id');
+        $firstVoucher = $voucher[0];
+
+        // recupera o id do voucher
+        $idVoucher = array_column($locationsWithinRadius, 'id');
+
+        $returnVoucher = Voucher::where('id', $firstVoucher)->get('voucher');
+
+
         if (!empty($locationsWithinRadius)) {
             // adiciona na tabela participação que voucher foi resgatado
             Participation::where('id', $id)->update(['recovered_voucher' => 1]);
@@ -132,9 +135,15 @@ class VoucherCoordinatesController extends Controller
             // adiciona na qunatidade de voucher resgatados mais um 
             VoucherCoordinate::where('id', $idVoucher)->increment('qtn_voucher_recovered');
 
+            //deletando o id que tem como referncia o voucher_id
+            VoucherCoordinate::where('id', $idVoucher)->delete();
+
+            //deletando o voucher que tem como referncia o id
+            Voucher::where('id', $firstVoucher)->delete();
+
             return response()->json([
                 'success' => true,
-                'message' => $voucher,
+                'message' => $returnVoucher,
             ]);
         }
     }
