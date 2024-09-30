@@ -103,10 +103,10 @@ class VoucherCoordinatesController extends Controller
             }
         }
 
-        // Se não houver voucher no raio de 100 metros do usuario ou vouchers esgostados
+        //se não houver voucher no raio de 100 metros do usuario ou vouchers esgostados
         if (empty($locationsWithinRadius)) {
 
-            // adiciona na tabela participação que voucher NÂO foi resgatado
+            //adiciona na tabela participação que voucher NÂO foi resgatado
             Participation::where('id', $id)->update(['recovered_voucher' => 0]);
 
             return response()->json([
