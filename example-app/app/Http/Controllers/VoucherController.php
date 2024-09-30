@@ -9,7 +9,7 @@ use App\Models\Voucher;
 
 class VoucherController extends Controller
 {
-    
+
     protected $voucher_cupons;
 
     public function __construct(Voucher $voucher_cupons)
@@ -32,6 +32,5 @@ class VoucherController extends Controller
         ]);
 
         return response()->json($voucher_cupons);
-    
     }
 }

@@ -144,7 +144,7 @@ class UserCoordinatesController extends Controller
                 ];
             }
         }
-        
+
         // se houver voucher no raio de 100 metros do usuario
         if (!empty($locationsWithinRadius)) {
             return response()->json([

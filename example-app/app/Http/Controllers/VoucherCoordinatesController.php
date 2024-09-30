@@ -29,7 +29,7 @@ class VoucherCoordinatesController extends Controller
             $this->voucher_coordinate->rulesCoordinatesVouchers(),
             $this->voucher_coordinate->feedbackCoordinatesVouchers()
         );
-        
+
         // se tudo ok com a validação cria voucherCoordinate
         $voucher_coordinate = $this->voucher_coordinate->create([
             'latitudine_1' => $request->latitudine_1,
