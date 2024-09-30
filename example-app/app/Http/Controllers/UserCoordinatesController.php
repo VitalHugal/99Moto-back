@@ -58,11 +58,11 @@ class UserCoordinatesController extends Controller
         // noite da cidade que usuário esta presente
         $night = $nightCitie[0];
 
-        // Convertendo as strings de horário para objetos de data/hora
+        // convertendo as strings de horário para objetos de data/hora
         $local_time = \Carbon\Carbon::createFromFormat('H:i:s', $local_time);
         $nightTime = \Carbon\Carbon::createFromFormat('H:i:s', $night);
 
-        // Verificando se a hora local é maior ou igual à hora de anoitecer
+        // verificando se a hora local é maior ou igual à hora de anoitecer
         if ($local_time < $nightTime) {
             return response()->json([
                 'success' => false,
@@ -98,11 +98,11 @@ class UserCoordinatesController extends Controller
         // recupera o id do usuário criado
         $idUser = $coordinate_user->id;
 
-        // Pega a latitude e longitude do usuário
+        // pega a latitude e longitude do usuário
         $latUser = $coordinate_user->user_coordinates_latitudine;
         $lonUser = $coordinate_user->user_coordinates_longitudine;
 
-        // Função para calcular a distância entre duas coordenadas
+        // função para calcular a distância entre duas coordenadas
         function getDistanceFromLatLonInKm($lat1, $lon1, $lat2, $lon2)
         {
             $R = 6371; // Raio da Terra em km
@@ -115,11 +115,11 @@ class UserCoordinatesController extends Controller
 
             $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
 
-            // Distância em km
+            // distância em km
             return $R * $c;
         }
 
-        // Definindo o raio máximo 100 metros
+        // definindo o raio máximo 100 metros
         $radiusInKm = 100 / 1000;
 
         // procedures para retornar todos os voucher do banco de dados
@@ -133,10 +133,10 @@ class UserCoordinatesController extends Controller
             $latDb = $location->latitudine_1;
             $lonDb = $location->longitudine_1;
 
-            // Calcula a distância entre o usuário e a localização atual
+            // calcula a distância entre o usuário e a localização atual
             $distanceInKm = getDistanceFromLatLonInKm($latUser, $lonUser, $latDb, $lonDb);
 
-            // Verifica se a distância está dentro do limite definido em radiusInKm
+            // verifica se a distância está dentro do limite definido em radiusInKm
             if ($distanceInKm <= $radiusInKm) {
                 $locationsWithinRadius[] = [
                     'id' => $location->id,
@@ -145,7 +145,7 @@ class UserCoordinatesController extends Controller
             }
         }
 
-        // Se houver voucher no raio de 100 metros do usuario
+        // se houver voucher no raio de 100 metros do usuario
         if (!empty($locationsWithinRadius)) {
             return response()->json([
                 'success' => true,
