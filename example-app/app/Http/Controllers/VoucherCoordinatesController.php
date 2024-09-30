@@ -114,7 +114,7 @@ class VoucherCoordinatesController extends Controller
             ]);
         }
 
-        // recupera o primeiro voucher 
+        // recupera o primeiro voucher
         $voucher = array_column($locationsWithinRadius, 'voucher_id');
         $firstVoucher = $voucher[0];
 
@@ -125,6 +125,7 @@ class VoucherCoordinatesController extends Controller
 
 
         if (!empty($locationsWithinRadius)) {
+            
             // adiciona na tabela participação que voucher foi resgatado
             Participation::where('id', $id)->update(['recovered_voucher' => 1]);
 
