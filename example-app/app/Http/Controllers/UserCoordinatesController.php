@@ -10,6 +10,7 @@ use App\Models\Participation;
 use Illuminate\Http\Request;
 
 use App\Models\UserCoordinate;
+use App\Models\VoucherCoordinate;
 
 class UserCoordinatesController extends Controller
 {
@@ -154,7 +155,7 @@ class UserCoordinatesController extends Controller
             ]);
         } else {
             return response()->json([
-                'success' => true,
+                'success' => false,
                 'message' => 'usuário em região NÃO promocional',
                 'idUser' => $idUser,
             ]);
