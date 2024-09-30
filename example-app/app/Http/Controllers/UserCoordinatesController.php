@@ -144,7 +144,7 @@ class UserCoordinatesController extends Controller
                 ];
             }
         }
-
+        
         // se houver voucher no raio de 100 metros do usuario
         if (!empty($locationsWithinRadius)) {
             return response()->json([
@@ -154,7 +154,7 @@ class UserCoordinatesController extends Controller
             ]);
         } else {
             return response()->json([
-                'success' => false,
+                'success' => true,
                 'message' => 'usuário em região NÃO promocional',
                 'idUser' => $idUser,
             ]);
@@ -171,7 +171,7 @@ class UserCoordinatesController extends Controller
         if ($deleteCoordinatesUsers === null) {
             return  response()->json(['error' => "Nenhum resultado encontrado."]);
         }
-        
+
         // deleta userCoordinates
         $deleteCoordinatesUsers->delete();
 
