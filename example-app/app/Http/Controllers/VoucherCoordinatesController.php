@@ -97,7 +97,6 @@ class VoucherCoordinatesController extends Controller
                     'latitudine_1' => $location->latitudine_1,
                     'longitudine_1' => $location->longitudine_1,
                     'voucher_id' => $location->voucher_id,
-                    'qtn_voucher_recovered' => $location->qtn_voucher_recovered,
                     'distance_in_meters' => $distanceInKm * 1000, // Convertendo para metros
                 ];
             }
@@ -115,9 +114,6 @@ class VoucherCoordinatesController extends Controller
             ]);
         }
 
-        // recuperando total de vouchers recuperados
-        $qtn_voucher_recovered = array_column($locationsWithinRadius, 'qtn_voucher_recovered');
-
         // recupera o primeiro voucher 
         $voucher = array_column($locationsWithinRadius, 'voucher_id');
         $firstVoucher = $voucher[0];
@@ -131,9 +127,6 @@ class VoucherCoordinatesController extends Controller
         if (!empty($locationsWithinRadius)) {
             // adiciona na tabela participação que voucher foi resgatado
             Participation::where('id', $id)->update(['recovered_voucher' => 1]);
-
-            // adiciona na qunatidade de voucher resgatados mais um 
-            VoucherCoordinate::where('id', $idVoucher)->increment('qtn_voucher_recovered');
 
             //deletando o id que tem como referncia o voucher_id
             VoucherCoordinate::where('id', $idVoucher)->delete();

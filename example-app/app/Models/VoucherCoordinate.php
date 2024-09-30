@@ -10,7 +10,7 @@ class VoucherCoordinate extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['latitudine_1','longitudine_1', 'qtn_voucher_recovered', 'voucher_id', 'custom_3', 'custom_4', 'custom_5'];
+    protected $fillable = ['latitudine_1','longitudine_1', 'voucher_id', 'custom_3', 'custom_4', 'custom_5'];
     protected $table = "vouchers_coordinates";
     protected $dates = ['deleted_at'];
 
