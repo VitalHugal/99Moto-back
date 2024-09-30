@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('vouchers', function (Blueprint $table) {
             $table->id();
             $table->string('voucher');
+            $table->boolean('recovered_voucher')->default(value: 0);
             $table->string('custom-1')->nullable();
             $table->string('custom-2')->nullable();
             $table->string('custom-3')->nullable();

@@ -10,7 +10,7 @@ class Voucher extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['voucher', 'custom-1', 'custom-2', 'custom-3'];
+    protected $fillable = ['voucher', 'recovered_voucher', 'custom-1', 'custom-2', 'custom-3'];
     protected $table = 'vouchers';
     protected $dates = ['deleted_at'];
 
@@ -18,6 +18,7 @@ class Voucher extends Model
     {
         return [
             'voucher' => 'required|max:6',
+            'recovered_voucher' => 'boolean|in:0,1'
         ];
     }
 
@@ -26,6 +27,7 @@ class Voucher extends Model
         return [
             'voucher.required' => 'Campo obrigatório.',
             'voucher.max' => 'O cupom deve ter até 6 caracteres.',
+            'recovered_voucher.boolean' => 'Só é válidos para esse campo 0 ou 1',
         ];
     }
 }

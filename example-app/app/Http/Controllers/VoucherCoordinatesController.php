@@ -79,7 +79,9 @@ class VoucherCoordinatesController extends Controller
         $radiusInKm = 100 / 1000;
 
         // procedures para retornar todos os voucher do banco de dados
-        $results = DB::select('CALL GetAllVoucherCoordinates()');
+        //$results = DB::select('CALL GetAllVoucherCoordinates()');
+
+        $results = VoucherCoordinate::where('recovered_voucher', 0)->get();
 
         // iniciando a variavel
         $locationsWithinRadius = [];
@@ -133,10 +135,10 @@ class VoucherCoordinatesController extends Controller
             Participation::where('id', $id)->update(['recovered_voucher' => 1]);
 
             //deletando o id que tem como referncia o voucher_id
-            VoucherCoordinate::where('id', $idVoucher)->delete();
+            VoucherCoordinate::where('id', $id)->update(['recovered_voucher' => 1]);
 
             //deletando o voucher que tem como referncia o id
-            Voucher::where('id', $firstVoucher)->delete();
+            Voucher::where('id', $id)->update(['recovered_voucher' => 1]);
 
             return response()->json([
                 'success' => true,

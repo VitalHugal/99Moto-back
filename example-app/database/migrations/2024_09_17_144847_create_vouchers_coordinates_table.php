@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('latitudine_1');
             $table->string('longitudine_1');
             $table->unsignedBigInteger('voucher_id');
+            $table->boolean('recovered_voucher')->default(value: 0);
             $table->string('custom_3')->nullable();
             $table->string('custom_4')->nullable();
             $table->string('custom_5')->nullable();
