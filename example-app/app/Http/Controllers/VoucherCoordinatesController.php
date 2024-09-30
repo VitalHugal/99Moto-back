@@ -30,7 +30,7 @@ class VoucherCoordinatesController extends Controller
             $this->voucher_coordinate->feedbackCoordinatesVouchers()
         );
         
-        // se tudo oque com a validação cria voucherCoordinate
+        // se tudo ok com a validação cria voucherCoordinate
         $voucher_coordinate = $this->voucher_coordinate->create([
             'latitudine_1' => $request->latitudine_1,
             'longitudine_1' => $request->longitudine_1,
@@ -46,7 +46,7 @@ class VoucherCoordinatesController extends Controller
         // Encontra as coordenadas do usuário
         $coordinate = UserCoordinate::find($id);
 
-        //se não encontrado o id informado na requisição
+        //se não encontrado o id informado na requisição retorna false
         if ($coordinate === null) {
             return response()->json([
                 'success' => false,

@@ -22,20 +22,24 @@ class UserCoordinatesController extends Controller
         $this->participation = $participation;
     }
 
+    //endpoint para inserir coordenadas do usuário
     public function coordinatesUsers(Request $request)
     {
+        // recupera os dados da requisição
         $info_latitudine = $request->user_coordinates_latitudine;
         $info_longitudine = $request->user_coordinates_longitudine;
         $local_time = $request->local_time;
 
+        // formata latitude e longitude e pega os 3 primeiros caracteres ex(-23/-46) 
         $info_latitudine_formated = substr($info_latitudine, 0, 3);
         $info_longitudine_formated = substr($info_longitudine, 0, 3);
 
+        // verifica se existe coordenadas na tabela de cidades 
         $verifyExistsCoordinates = NightInCities::where('city_latitudine', 'LIKE', $info_latitudine_formated . '%')
             ->where('city_longitudine', 'LIKE', $info_longitudine_formated . '%')
             ->get();
 
-        // Verificando se a coleção está vazia
+        // verificando se a coleção está vazia
         if ($verifyExistsCoordinates->isEmpty()) {
             return response()->json([
                 'success' => false,
@@ -43,12 +47,15 @@ class UserCoordinatesController extends Controller
             ]);
         }
 
+        // iniciando a variavel
         $nightCitie = [];
 
+        // percorre a variavel e recupera o horário da cidade 
         foreach ($verifyExistsCoordinates as $city) {
             $nightCitie[] = $city->night;
         }
 
+        // noite da cidade que usuário esta presente
         $night = $nightCitie[0];
 
         // Convertendo as strings de horário para objetos de data/hora
@@ -62,34 +69,38 @@ class UserCoordinatesController extends Controller
                 'message' => 'Não anoiteceu ainda.',
             ]);
         }
-        
+
+        // valida a requisição
         $coordinate_user = $request->validate(
             $this->coordinate_user->rulesCoordinatesUsers2(),
             $this->coordinate_user->feedbackCoordinatesUsers2(),
         );
 
+        // valida a requisição
         $participation = $request->validate(
             $this->coordinate_user->rulesCoordinatesUsers(),
             $this->coordinate_user->feedbackCoordinatesUsers()
         );
 
+        // se tudo ok com a validação cria userCoordinate
         $coordinate_user = $this->coordinate_user->create([
             'user_coordinates_latitudine' => $request->user_coordinates_latitudine,
             'user_coordinates_longitudine' => $request->user_coordinates_longitudine,
             'local_time' => $request->local_time,
         ]);
 
+        // se tudo ok com a validação cria participation
         $participation = $this->participation->create([
             'user_participation_latitudine' => $request->user_coordinates_latitudine,
             'user_participation_longitudine' => $request->user_coordinates_longitudine,
         ]);
 
+        // recupera o id do usuário criado
         $idUser = $coordinate_user->id;
 
         // Pega a latitude e longitude do usuário
         $latUser = $coordinate_user->user_coordinates_latitudine;
         $lonUser = $coordinate_user->user_coordinates_longitudine;
-
 
         // Função para calcular a distância entre duas coordenadas
         function getDistanceFromLatLonInKm($lat1, $lon1, $lat2, $lon2)
@@ -150,15 +161,19 @@ class UserCoordinatesController extends Controller
         }
     }
 
+    //endpoint para deletar userCoordinates
     public function deleteCoordinatesUsers($id)
     {
-        $deeleteCoordinatesUsers = $this->coordinate_user->find($id);
+        //encontra as coordenadas do usuário
+        $deleteCoordinatesUsers = $this->coordinate_user->find($id);
 
-        if ($deeleteCoordinatesUsers === null) {
+        //se não encontrado o id informado na requisição retorna false
+        if ($deleteCoordinatesUsers === null) {
             return  response()->json(['error' => "Nenhum resultado encontrado."]);
         }
-
-        $deeleteCoordinatesUsers->delete();
+        
+        // deleta userCoordinates
+        $deleteCoordinatesUsers->delete();
 
         return response()->json(["sucesso" => 'Coordenadas do usuário excluida com sucesso.']);
     }

@@ -17,7 +17,7 @@ class Voucher extends Model
     public function rules()
     {
         return [
-            'voucher' => 'required',
+            'voucher' => 'required|max:6',
         ];
     }
 
@@ -25,6 +25,7 @@ class Voucher extends Model
     {
         return [
             'voucher.required' => 'Campo obrigatório.',
+            'voucher.max' => 'O cupom deve ter até 6 caracteres.',
         ];
     }
 }
