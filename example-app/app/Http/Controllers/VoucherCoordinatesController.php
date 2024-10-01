@@ -21,7 +21,7 @@ class VoucherCoordinatesController extends Controller
         $this->voucher_coordinate = $voucher_coordinate;
     }
 
-    //endpoint para inserir localização dos vouchers
+    // endpoint para inserir localização dos vouchers
     public function insertVoucherCoordinates(Request $request)
     {
         // valida a requisição
@@ -40,13 +40,13 @@ class VoucherCoordinatesController extends Controller
         return response()->json($voucher_coordinate);
     }
 
-    //endpoint para recuperar voucher
+    // endpoint para recuperar voucher
     public function getVouchers($id)
     {
         // Encontra as coordenadas do usuário
         $coordinate = UserCoordinate::find($id);
 
-        //se não encontrado o id informado na requisição retorna false
+        // se não encontrado o id informado na requisição retorna false
         if ($coordinate === null) {
             return response()->json([
                 'success' => false,
@@ -104,10 +104,10 @@ class VoucherCoordinatesController extends Controller
             }
         }
 
-        //se não houver voucher no raio de 100 metros do usuario ou vouchers esgostados
+        // se não houver voucher no raio de 100 metros do usuario ou vouchers esgostados
         if (empty($locationsWithinRadius)) {
 
-            //adiciona na tabela participação que voucher NÂO foi resgatado
+            // adiciona na tabela participação que voucher NÂO foi resgatado
             Participation::where('id', $id)->update(['recovered_voucher' => 0]);
 
             return response()->json([
@@ -126,16 +126,16 @@ class VoucherCoordinatesController extends Controller
         // resgantando o voucher
         $voucher = Voucher::where('id', $firstVoucher)->get('voucher');
 
-        //se tiver voucher
+        // se tiver voucher
         if (!empty($locationsWithinRadius)) {
 
             // adiciona na tabela participação que voucher foi resgatado
             Participation::where('id', $id)->update(['recovered_voucher' => 1]);
 
-            //deletando o id que tem como referncia o voucher_id
+            // deletando o id que tem como referncia o voucher_id
             VoucherCoordinate::where('id', $idVoucher)->update(['recovered_voucher' => 1]);
 
-            //deletando o voucher que tem como referncia o id
+            // deletando o voucher que tem como referncia o id
             Voucher::where('id', $idVoucher)->update(['recovered_voucher' => 1]);
 
             return response()->json([
