@@ -21,6 +21,7 @@ class CitiesSeeder extends Seeder
                 'city_latitudine' => '-10',
                 'city_longitudine' => '-37',
                 'night' => '18:00:00',
+                'daylight' => '05:00:00',
             ],
             [
                 'UF' => 'PA',
@@ -28,6 +29,7 @@ class CitiesSeeder extends Seeder
                 'city_latitudine' => '-1',
                 'city_longitudine' => '-48',
                 'night' => '18:30:00',
+                'daylight' => '05:49:00',
             ],
             [
                 'UF' => 'MG',
@@ -35,6 +37,7 @@ class CitiesSeeder extends Seeder
                 'city_latitudine' => '-19',
                 'city_longitudine' => '-43',
                 'night' => '18:30:00',
+                'daylight' => '05:24:00',
             ],
             [
                 'UF' => 'RR',
@@ -42,6 +45,7 @@ class CitiesSeeder extends Seeder
                 'city_latitudine' => '2',
                 'city_longitudine' => '-60',
                 'night' => '18:30:00',
+                'daylight' => '05:39:00',
             ],
             [
                 'UF' => 'DF',
@@ -49,6 +53,7 @@ class CitiesSeeder extends Seeder
                 'city_latitudine' => '-15',
                 'city_longitudine' => '-47',
                 'night' => '18:30:00',
+                'daylight' => '05:40:00',
             ],
             [
                 'UF' => 'MS',
@@ -56,6 +61,7 @@ class CitiesSeeder extends Seeder
                 'city_latitudine' => '-20',
                 'city_longitudine' => '-54',
                 'night' => '18:00:00',
+                'daylight' => '05:06:00',
             ],
             [
                 'UF' => 'MT',
@@ -63,6 +69,7 @@ class CitiesSeeder extends Seeder
                 'city_latitudine' => '-15',
                 'city_longitudine' => '-56',
                 'night' => '18:10:00',
+                'daylight' => '05:14:00',
             ],
             [
                 'UF' => 'PR',
@@ -70,6 +77,7 @@ class CitiesSeeder extends Seeder
                 'city_latitudine' => '-25',
                 'city_longitudine' => '-49',
                 'night' => '18:45:00',
+                'daylight' => '05:42:00',
             ],
             [
                 'UF' => 'SC',
@@ -77,6 +85,7 @@ class CitiesSeeder extends Seeder
                 'city_latitudine' => '-27',
                 'city_longitudine' => '-48',
                 'night' => '18:45:00',
+                'daylight' => '05:38:00',
             ],
             [
                 'UF' => 'CE',
@@ -84,6 +93,7 @@ class CitiesSeeder extends Seeder
                 'city_latitudine' => '-3',
                 'city_longitudine' => '-38',
                 'night' => '18:00:00',
+                'daylight' => '05:08:00',
             ],
             [
                 'UF' => 'GO',
@@ -91,6 +101,7 @@ class CitiesSeeder extends Seeder
                 'city_latitudine' => '-16',
                 'city_longitudine' => '-49',
                 'night' => '18:40:00',
+                'daylight' => '05:47:00',
             ],
             [
                 'UF' => 'PB',
@@ -98,6 +109,7 @@ class CitiesSeeder extends Seeder
                 'city_latitudine' => '-7',
                 'city_longitudine' => '-34',
                 'night' => '17:45:00',
+                'daylight' => '04:53:00',
             ],
             [
                 'UF' => 'AP',
@@ -105,6 +117,7 @@ class CitiesSeeder extends Seeder
                 'city_latitudine' => '0',
                 'city_longitudine' => '-51',
                 'night' => '19:00:00',
+                'daylight' => '06:00:00',
             ],
             [
                 'UF' => 'AL',
@@ -112,6 +125,7 @@ class CitiesSeeder extends Seeder
                 'city_latitudine' => '-9',
                 'city_longitudine' => '-35',
                 'night' => '18:10:00',
+                'daylight' => '04:55:00',
             ],
             [
                 'UF' => 'AM',
@@ -119,6 +133,7 @@ class CitiesSeeder extends Seeder
                 'city_latitudine' => '-3',
                 'city_longitudine' => '-60',
                 'night' => '18:30:00',
+                'daylight' => '05:35:00',
             ],
             [
                 'UF' => 'RN',
@@ -126,6 +141,7 @@ class CitiesSeeder extends Seeder
                 'city_latitudine' => '-5',
                 'city_longitudine' => '-35',
                 'night' => '17:45:00',
+                'daylight' => '04:54:00',
             ],
             [
                 'UF' => 'TO',
@@ -133,6 +149,7 @@ class CitiesSeeder extends Seeder
                 'city_latitudine' => '-10',
                 'city_longitudine' => '-48',
                 'night' => '18:30:00',
+                'daylight' => '05:45:00',
             ],
             [
                 'UF' => 'RS',
@@ -140,6 +157,7 @@ class CitiesSeeder extends Seeder
                 'city_latitudine' => '-30',
                 'city_longitudine' => '-51',
                 'night' => '19:00:00',
+                'daylight' => '05:47:00',
             ],
             [
                 'UF' => 'RO',
@@ -147,6 +165,7 @@ class CitiesSeeder extends Seeder
                 'city_latitudine' => '-8',
                 'city_longitudine' => '-63',
                 'night' => '18:40:00',
+                'daylight' => '05:48:00',
             ],
             [
                 'UF' => 'PE',
@@ -154,6 +173,7 @@ class CitiesSeeder extends Seeder
                 'city_latitudine' => '-8',
                 'city_longitudine' => '-34',
                 'night' => '17:45:00',
+                'daylight' => '04:52:00',
             ],
             [
                 'UF' => 'AC',
@@ -161,6 +181,7 @@ class CitiesSeeder extends Seeder
                 'city_latitudine' => '-9',
                 'city_longitudine' => '-67',
                 'night' => '18:00:00',
+                'daylight' => '05:00:00',
             ],
             [
                 'UF' => 'RJ',
@@ -168,6 +189,7 @@ class CitiesSeeder extends Seeder
                 'city_latitudine' => '-22',
                 'city_longitudine' => '-43',
                 'night' => '18:20:00',
+                'daylight' => '05:19:00',
             ],
             [
                 'UF' => 'BA',
@@ -175,6 +197,7 @@ class CitiesSeeder extends Seeder
                 'city_latitudine' => '-12',
                 'city_longitudine' => '-38',
                 'night' => '18:00:00',
+                'daylight' => '05:05:00',
             ],
             [
                 'UF' => 'MA',
@@ -182,6 +205,7 @@ class CitiesSeeder extends Seeder
                 'city_latitudine' => '-2',
                 'city_longitudine' => '-44',
                 'night' => '18:30:00',
+                'daylight' => '05:32:00',
             ],
             [
                 'UF' => 'SP',
@@ -189,6 +213,7 @@ class CitiesSeeder extends Seeder
                 'city_latitudine' => '-23',
                 'city_longitudine' => '-46',
                 'night' => '18:30:00',
+                'daylight' => '05:33:00',
             ],
             [
                 'UF' => 'PI',
@@ -196,6 +221,7 @@ class CitiesSeeder extends Seeder
                 'city_latitudine' => '-5',
                 'city_longitudine' => '-42',
                 'night' => '18:15:00',
+                'daylight' => '05:25:00',
             ],
             [
                 'UF' => 'ES',
@@ -203,6 +229,7 @@ class CitiesSeeder extends Seeder
                 'city_latitudine' => '-20',
                 'city_longitudine' => '-40',
                 'night' => '18:00:00',
+                'daylight' => '05:30:00',
             ],
         ]);
     }

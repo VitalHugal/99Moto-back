@@ -49,7 +49,6 @@ class UserCoordinate extends Model
             'user_coordinates_longitudine.required' => "Campo obrigátorio",
             'user_coordinates_longitudine.required' => "Só é possível preencher o campo com até 255 carateres.",
             'local_time.required' => "Campo obrigátorio",
-            'local_time.required' => "Campo obrigátorio",
         ];
     }
 }

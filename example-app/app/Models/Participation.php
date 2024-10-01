@@ -10,18 +10,25 @@ class Participation extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['user_participation_latitudine', 'user_participation_longitudine', 'recovered_voucher', 'promotional_area'];
+    protected $fillable = [
+        'user_participation_latitudine',
+        'user_participation_longitudine',
+        'recovered_voucher',
+        'promotional_area',
+        'start_participation'
+    ];
     protected $table = 'participation';
     protected $dates = 'deleted_at';
 
 
-    public function rulesParticipation() 
+    public function rulesParticipation()
     {
         return [
-          'user_participation_latitudine'  => 'required|max:255',
-          'user_participation_longitudine'  => 'required|max:255',
-          'recovered_voucher' => 'boolean|in:0,1',
-          'promotional_area' => 'boolean|in:0,1|nullable'
+            'user_participation_latitudine'  => 'required|max:255',
+            'user_participation_longitudine'  => 'required|max:255',
+            'recovered_voucher' => 'boolean|in:0,1',
+            'promotional_area' => 'boolean|in:0,1|nullable',
+            'start_participation' => 'required',
         ];
     }
 
@@ -32,6 +39,7 @@ class Participation extends Model
             'user_participation_latitudine.max' => 'Só é possível preencher o campo com até 255 carateres.',
             'user_participation_longitudine.required' => 'Campo obrigátorio',
             'user_participation_longitudine.max' => 'Só é possível preencher o campo com até 255 carateres.',
+            'start_participation' => 'Campo obrigatório'
         ];
     }
 }

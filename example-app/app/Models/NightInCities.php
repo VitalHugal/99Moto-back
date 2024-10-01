@@ -10,7 +10,7 @@ class NightInCities extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['UF','city','city_latitudine','city_longitudine','night'];
+    protected $fillable = ['UF','city','city_latitudine','city_longitudine','night', 'daylight'];
     protected $table = 'night_in_cities';
     protected $dates = 'deleted_at';
 }

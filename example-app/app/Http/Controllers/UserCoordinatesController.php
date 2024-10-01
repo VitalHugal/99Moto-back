@@ -51,23 +51,36 @@ class UserCoordinatesController extends Controller
         // iniciando a variavel
         $nightCitie = [];
 
-        // percorre a variavel e recupera o horário da cidade 
+        // percorre a variavel e recupera o horário noturno da cidade 
         foreach ($verifyExistsCoordinates as $city) {
             $nightCitie[] = $city->night;
+        }
+
+        // iniciando a variavel
+        $dayLightCitie = [];
+
+        // percorre a variavel e recupera o horário diurno da cidade 
+        foreach ($verifyExistsCoordinates as $city) {
+            $dayLightCitie[] = $city->daylight;
         }
 
         // noite da cidade que usuário esta presente
         $night = $nightCitie[0];
 
+        // dia da cidade que usuário esta presente
+        $dayLight = $dayLightCitie[0];
+
         // convertendo as strings de horário para objetos de data/hora
         $local_time = \Carbon\Carbon::createFromFormat('H:i:s', $local_time);
         $nightTime = \Carbon\Carbon::createFromFormat('H:i:s', $night);
+        $dayTime = \Carbon\Carbon::createFromFormat('H:i:s', $dayLight);
 
-        // verificando se a hora local é maior ou igual à hora de anoitecer
-        if ($local_time < $nightTime) {
+        
+        if (($local_time >= $nightTime && $local_time <= '23:59') || ($local_time >= '00:00' && $local_time <= $dayTime)) {
+        } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Não anoiteceu ainda.',
+                'message' => 'Fora do horário de participação.',
             ]);
         }
 
@@ -94,6 +107,7 @@ class UserCoordinatesController extends Controller
         $participation = $this->participation->create([
             'user_participation_latitudine' => $request->user_coordinates_latitudine,
             'user_participation_longitudine' => $request->user_coordinates_longitudine,
+            'start_participation' => $request->local_time,
         ]);
 
         // recupera o id do usuário criado
@@ -148,10 +162,10 @@ class UserCoordinatesController extends Controller
 
         // se houver voucher no raio de 100 metros do usuario
         if (!empty($locationsWithinRadius)) {
-            
+
             // se estiver em area promocional adiciona 1 na coluna 
             Participation::where('id', $idUser)->update(['promotional_area' => 1]);
-            
+
             return response()->json([
                 'success' => true,
                 'message' => 'usuário em região promocional',
@@ -161,7 +175,7 @@ class UserCoordinatesController extends Controller
 
             // senão estiver em area promocional adiciona 0 na coluna 
             Participation::where('id', $idUser)->update(['promotional_area' => 0]);
-            
+
             return response()->json([
                 'success' => false,
                 'message' => 'usuário em região NÃO promocional',

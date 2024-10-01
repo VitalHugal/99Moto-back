@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('city_latitudine');
             $table->string('city_longitudine');
             $table->string('night');
+            $table->string('daylight');
             $table->timestamps();
             $table->softDeletes();
         });
