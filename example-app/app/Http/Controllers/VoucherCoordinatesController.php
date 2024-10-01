@@ -10,6 +10,8 @@ use App\Models\VoucherCoordinate;
 use App\Models\UserCoordinate;
 use App\Models\Participation;
 use App\Models\Voucher;
+use DateInterval;
+use DateTime;
 use Illuminate\Support\Facades\DB;
 
 class VoucherCoordinatesController extends Controller
@@ -44,8 +46,6 @@ class VoucherCoordinatesController extends Controller
     // endpoint para recuperar voucher
     public function getVouchers($id)
     {
-        $date = date('H:i:s');
-
         // Encontra as coordenadas do usuário
         $coordinate = UserCoordinate::find($id);
 
@@ -61,6 +61,30 @@ class VoucherCoordinatesController extends Controller
         $latUser = $coordinate->user_coordinates_latitudine;
         $lonUser = $coordinate->user_coordinates_longitudine;
 
+        $info_latitudine_formated = explode('.', $latUser);
+        $info_longitudine_formated = explode('.', $lonUser);
+
+        $localUF = NightInCities::where('city_latitudine', $info_latitudine_formated)->where('city_longitudine', $info_longitudine_formated)->first();
+
+        $localUF->UF;
+
+        $UTC3 = ['DF', 'SP', 'RJ', 'MG', 'BA', 'RS', 'PR', 'SC', 'ES', 'GO', 'CE', 'MA', 'PI', 'PB', 'PE', 'AL', 'SE', 'RN'];
+        $UTC4 = ['MT', 'MS', 'AM', 'RO', 'RR'];
+
+        $date = new DateTime();
+
+        if ($localUF == $UTC3) {
+            
+        } elseif ($localUF == $UTC4) {
+            // Subtrai 1 hora
+            $date->sub(new DateInterval('PT1H'));
+        } else {
+            // Subtrai 2 horas
+            $date->sub(new DateInterval('PT2H'));
+        }
+        
+        $formatedDate = $date->format('d-m-Y H:i:s');
+        
         // Função para calcular a distância entre duas coordenadas
         function getDistanceFromLatLonInKm($lat1, $lon1, $lat2, $lon2)
         {
@@ -112,6 +136,9 @@ class VoucherCoordinatesController extends Controller
 
             // adiciona na tabela participação que voucher NÂO foi resgatado
             Participation::where('id', $id)->update(['recovered_voucher' => 0]);
+            
+            //adicionando date e hora
+            Participation::where('id', $id)->update(['end_participation' => $formatedDate]);
 
             return response()->json([
                 'success' => false,
@@ -134,6 +161,9 @@ class VoucherCoordinatesController extends Controller
 
             // adiciona na tabela participação que voucher foi resgatado
             Participation::where('id', $id)->update(['recovered_voucher' => 1]);
+
+            //adicionando date e hora
+            Participation::where('id', $id)->update(['end_participation' => $formatedDate]);
 
             // deletando o id que tem como referncia o voucher_id
             VoucherCoordinate::where('id', $idVoucher)->update(['recovered_voucher' => 1]);

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->boolean('recovered_voucher')->default(value: 0);
             $table->boolean('promotional_area')->nullable();
             $table->string('start_participation');
+            $table->string('end_participation')->default(value:0);
             $table->timestamps();
             $table->softDeletes();
         });
