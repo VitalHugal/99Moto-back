@@ -148,12 +148,20 @@ class UserCoordinatesController extends Controller
 
         // se houver voucher no raio de 100 metros do usuario
         if (!empty($locationsWithinRadius)) {
+            
+            // se estiver em area promocional adiciona 1 na coluna 
+            Participation::where('id', $idUser)->update(['promotional_area' => 1]);
+            
             return response()->json([
                 'success' => true,
                 'message' => 'usuário em região promocional',
                 'idUser' => $idUser,
             ]);
         } else {
+
+            // senão estiver em area promocional adiciona 0 na coluna 
+            Participation::where('id', $idUser)->update(['promotional_area' => 0]);
+            
             return response()->json([
                 'success' => false,
                 'message' => 'usuário em região NÃO promocional',

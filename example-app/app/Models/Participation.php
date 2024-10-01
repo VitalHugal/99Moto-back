@@ -10,7 +10,7 @@ class Participation extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['user_participation_latitudine', 'user_participation_longitudine', 'recovered_voucher'];
+    protected $fillable = ['user_participation_latitudine', 'user_participation_longitudine', 'recovered_voucher', 'promotional_area'];
     protected $table = 'participation';
     protected $dates = 'deleted_at';
 
@@ -20,7 +20,8 @@ class Participation extends Model
         return [
           'user_participation_latitudine'  => 'required|max:255',
           'user_participation_longitudine'  => 'required|max:255',
-          'recovered_voucher' => 'boolean|in:0,1'
+          'recovered_voucher' => 'boolean|in:0,1',
+          'promotional_area' => 'boolean|in:0,1|nullable'
         ];
     }
 
