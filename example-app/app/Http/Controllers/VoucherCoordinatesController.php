@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\NightInCities;
 use Illuminate\Http\Request;
 
 use App\Models\VoucherCoordinate;
@@ -43,6 +44,8 @@ class VoucherCoordinatesController extends Controller
     // endpoint para recuperar voucher
     public function getVouchers($id)
     {
+        $date = date('H:i:s');
+
         // Encontra as coordenadas do usuário
         $coordinate = UserCoordinate::find($id);
 

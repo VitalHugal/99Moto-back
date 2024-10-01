@@ -32,50 +32,31 @@ class UserCoordinatesController extends Controller
         $local_time = $request->local_time;
 
         // formata latitude e longitude e pega os 3 primeiros caracteres ex(-23/-46) 
-        $info_latitudine_formated = substr($info_latitudine, 0, 3);
-        $info_longitudine_formated = substr($info_longitudine, 0, 3);
+        $info_latitudine_formated = explode('.', $info_latitudine);
+        $info_longitudine_formated = explode('.', $info_longitudine);
 
         // verifica se existe coordenadas na tabela de cidades 
-        $verifyExistsCoordinates = NightInCities::where('city_latitudine', 'LIKE', $info_latitudine_formated . '%')
-            ->where('city_longitudine', 'LIKE', $info_longitudine_formated . '%')
-            ->get();
+        $verifyExistsCoordinates = NightInCities::where('city_latitudine', $info_latitudine_formated[0])
+            ->where('city_longitudine', $info_longitudine_formated[0])
+            ->first();
 
         // verificando se a coleção está vazia
-        if ($verifyExistsCoordinates->isEmpty()) {
+        if ($verifyExistsCoordinates === null) {
             return response()->json([
                 'success' => false,
                 'message' => 'Nenhuma localização encontrada',
             ]);
         }
 
-        // iniciando a variavel
-        $nightCitie = [];
-
-        // percorre a variavel e recupera o horário noturno da cidade 
-        foreach ($verifyExistsCoordinates as $city) {
-            $nightCitie[] = $city->night;
-        }
-
-        // iniciando a variavel
-        $dayLightCitie = [];
-
-        // percorre a variavel e recupera o horário diurno da cidade 
-        foreach ($verifyExistsCoordinates as $city) {
-            $dayLightCitie[] = $city->daylight;
-        }
-
-        // noite da cidade que usuário esta presente
-        $night = $nightCitie[0];
-
-        // dia da cidade que usuário esta presente
-        $dayLight = $dayLightCitie[0];
+        $night = $verifyExistsCoordinates->night;
+        $dayLight = $verifyExistsCoordinates->daylight;
 
         // convertendo as strings de horário para objetos de data/hora
         $local_time = \Carbon\Carbon::createFromFormat('H:i:s', $local_time);
         $nightTime = \Carbon\Carbon::createFromFormat('H:i:s', $night);
         $dayTime = \Carbon\Carbon::createFromFormat('H:i:s', $dayLight);
 
-        
+
         if (($local_time >= $nightTime && $local_time <= '23:59') || ($local_time >= '00:00' && $local_time <= $dayTime)) {
         } else {
             return response()->json([
