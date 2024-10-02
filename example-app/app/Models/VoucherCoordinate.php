@@ -20,7 +20,7 @@ class VoucherCoordinate extends Model
         return [
             'latitudine_1' => "required",
             'longitudine_1' => "required",
-            'voucher_id' => 'required|integer',
+            'voucher_id' => '|integer|nullable',
             'recovered_voucher' => 'boolean|in:0,1'
         ];
     }
@@ -30,7 +30,6 @@ class VoucherCoordinate extends Model
         return [
             'latitudine_1.required' => "Campo é obrigátorio.",
             'longitudine_1.required' => "Campo é obrigátorio.",
-            'voucher_id.required' => "Campo é obrigátorio.",
             'voucher_id.integer' => "Válido apenas valores númericos inteiros para esse campo.",
             'recovered_voucher.boolean' => 'Só é válidos para esse campo 0 ou 1',
         ];

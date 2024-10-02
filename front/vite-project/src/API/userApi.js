@@ -7,7 +7,7 @@ import axios from "axios";
 // Base URL: http://10.10.0.210:8000/api
 export const API_URL = api.api_url;
 
-// End-Points / Rotas da API:
+// End-Points / Rota da API:
 // REGISTER USER COORDINATES //
 // Adiciona coordenadas do usuario (CREATE):
 export async function USER_COORDINATES(user_coordinates_latitudine, user_coordinates_longitudine, local_time) {
@@ -19,10 +19,13 @@ export async function USER_COORDINATES(user_coordinates_latitudine, user_coordin
         "local_time": local_time
     },
         {
-            headers: { "Accept": "application/json", 'X-Dry-Run': true }
+            headers: {
+                "Accept": "application/json",
+                'X-Dry-Run': true
+            }
         }
     );
 
-    // console.log(response.data);
+    console.log(response.data);
     return response.data;
 }

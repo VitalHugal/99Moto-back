@@ -34,12 +34,13 @@ class UserCoordinatesController extends Controller
         // formata latitude e longitude e pega os 3 primeiros caracteres ex(-23/-46) 
         $info_latitudine_formated = explode('.', $info_latitudine);
         $info_longitudine_formated = explode('.', $info_longitudine);
+        $info_local_time_formated = explode(' ', $local_time);
 
         // verifica se existe coordenadas na tabela de cidades 
         $verifyExistsCoordinates = NightInCities::where('city_latitudine', $info_latitudine_formated[0])
             ->where('city_longitudine', $info_longitudine_formated[0])
             ->first();
-
+        
         // verificando se a coleção está vazia
         if ($verifyExistsCoordinates === null) {
             return response()->json([
@@ -52,12 +53,14 @@ class UserCoordinatesController extends Controller
         $dayLight = $verifyExistsCoordinates->daylight;
 
         // convertendo as strings de horário para objetos de data/hora
-        $local_time = \Carbon\Carbon::createFromFormat('H:i:s', $local_time);
         $nightTime = \Carbon\Carbon::createFromFormat('H:i:s', $night);
         $dayTime = \Carbon\Carbon::createFromFormat('H:i:s', $dayLight);
 
 
-        if (($local_time >= $nightTime && $local_time <= '23:59') || ($local_time >= '00:00' && $local_time <= $dayTime)) {
+        if (($info_local_time_formated[1] >= $nightTime && $info_local_time_formated[1] <= '23:59')
+            ||
+            ($info_local_time_formated[1] >= '00:00' && $info_local_time_formated[1] <= $dayTime)
+        ) {
         } else {
             return response()->json([
                 'success' => false,

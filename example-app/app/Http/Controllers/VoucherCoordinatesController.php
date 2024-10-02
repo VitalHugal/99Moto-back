@@ -37,7 +37,7 @@ class VoucherCoordinatesController extends Controller
         $voucher_coordinate = $this->voucher_coordinate->create([
             'latitudine_1' => $request->latitudine_1,
             'longitudine_1' => $request->longitudine_1,
-            'voucher_id' => $request->voucher_id,
+            //'voucher_id' => $request->voucher_id,
         ]);
 
         return response()->json($voucher_coordinate);
@@ -125,7 +125,7 @@ class VoucherCoordinatesController extends Controller
                     'id' => $location->id,
                     'latitudine_1' => $location->latitudine_1,
                     'longitudine_1' => $location->longitudine_1,
-                    'voucher_id' => $location->voucher_id,
+                    //'voucher_id' => $location->voucher_id,
                     'distance_in_meters' => $distanceInKm * 1000, // Convertendo para metros
                 ];
             }
@@ -166,7 +166,7 @@ class VoucherCoordinatesController extends Controller
             Participation::where('id', $id)->update(['end_participation' => $formatedDate]);
 
             // deletando o id que tem como referncia o voucher_id
-            VoucherCoordinate::where('id', $idVoucher)->update(['recovered_voucher' => 1]);
+            //VoucherCoordinate::where('id', $idVoucher)->update(['recovered_voucher' => 1]);
 
             // deletando o voucher que tem como referncia o id
             Voucher::where('id', $idVoucher)->update(['recovered_voucher' => 1]);
