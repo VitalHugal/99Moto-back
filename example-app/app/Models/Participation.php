@@ -14,6 +14,7 @@ class Participation extends Model
         'user_participation_latitudine',
         'user_participation_longitudine',
         'recovered_voucher',
+        'voucher_id',
         'promotional_area',
         'start_participation',
         'end_participation'
@@ -31,6 +32,7 @@ class Participation extends Model
             'promotional_area' => 'boolean|in:0,1|nullable',
             'start_participation' => 'required',
             'end_participation' => 'required',
+            'voucher_id' => 'integer|nullable',
         ];
     }
 
@@ -41,8 +43,11 @@ class Participation extends Model
             'user_participation_latitudine.max' => 'Só é possível preencher o campo com até 255 carateres.',
             'user_participation_longitudine.required' => 'Campo obrigátorio',
             'user_participation_longitudine.max' => 'Só é possível preencher o campo com até 255 carateres.',
-            'start_participation' => 'Campo obrigatório',
-            'end_participation' => 'Campo obrigatório'
+            'start_participation.required' => 'Campo obrigatório.',
+            'end_participation.required' => 'Campo obrigatório.',
+            'voucher_id.integer' => 'Válido apenas valores inteiros.',
+            'promotional_area.boolean' => 'Valido apenas 0 ou 1 para esse campo.',
+            'recovered_voucher.boolean' => 'Valido apenas 0 ou 1 para esse campo.',
         ];
     }
 }

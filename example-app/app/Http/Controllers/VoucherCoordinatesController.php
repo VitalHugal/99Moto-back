@@ -74,7 +74,6 @@ class VoucherCoordinatesController extends Controller
         $date = new DateTime();
 
         if ($localUF == $UTC3) {
-            
         } elseif ($localUF == $UTC4) {
             // Subtrai 1 hora
             $date->sub(new DateInterval('PT1H'));
@@ -82,9 +81,9 @@ class VoucherCoordinatesController extends Controller
             // Subtrai 2 horas
             $date->sub(new DateInterval('PT2H'));
         }
-        
+
         $formatedDate = $date->format('d-m-Y H:i:s');
-        
+
         // Função para calcular a distância entre duas coordenadas
         function getDistanceFromLatLonInKm($lat1, $lon1, $lat2, $lon2)
         {
@@ -105,8 +104,8 @@ class VoucherCoordinatesController extends Controller
         // Definindo o raio máximo 100 metros
         $radiusInKm = 100 / 1000;
 
-        // procedures para retornar todos os voucher do banco de dados cujo não tenha sido recuperados
-        $results = DB::select('CALL GetAllVoucherCoordinatesWhereRecoveredVouchers()');
+        // procedures para retornar todos as localizações de vouchers do banco de dados
+        $results = DB::select('CALL GetAllVoucherCoordinates()');
 
         // iniciando a variavel
         $locationsWithinRadius = [];
@@ -131,30 +130,39 @@ class VoucherCoordinatesController extends Controller
             }
         }
 
+        $idVocuherCoordinates = array_column($locationsWithinRadius, "id");
+
         // se não houver voucher no raio de 100 metros do usuario ou vouchers esgostados
         if (empty($locationsWithinRadius)) {
 
             // adiciona na tabela participação que voucher NÂO foi resgatado
             Participation::where('id', $id)->update(['recovered_voucher' => 0]);
-            
-            //adicionando date e hora
+
+            // adicionando date e hora
             Participation::where('id', $id)->update(['end_participation' => $formatedDate]);
+
+            // adicionando 0 para voucher_id 
+            Participation::where('id', $id)->update(['voucher_id' => null]);
 
             return response()->json([
                 'success' => false,
-                'message' => 'Não esta na area promocional ou vouchers esgotados.'
+                'message' => 'Não esta na area promocional.'
             ]);
         }
 
-        // recupera o primeiro id de localização com voucher
-        $voucher = array_column($locationsWithinRadius, 'voucher_id');
-        $firstVoucher = $voucher[0];
+        $voucher = Voucher::where('recovered_voucher', 0)->first();
 
-        // recupera o id da localização do voucher
-        $idVoucher = array_column($locationsWithinRadius, 'id');
+        if ($voucher === null) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Vouchers esgotados.'
+            ]);
+        }
 
-        // resgantando o voucher
-        $voucher = Voucher::where('id', $firstVoucher)->get('voucher');
+        $idVoucher = $voucher->id;
+
+        $cupom = $voucher->voucher;
+
 
         // se tiver voucher
         if (!empty($locationsWithinRadius)) {
@@ -165,15 +173,18 @@ class VoucherCoordinatesController extends Controller
             //adicionando date e hora
             Participation::where('id', $id)->update(['end_participation' => $formatedDate]);
 
-            // deletando o id que tem como referncia o voucher_id
-            //VoucherCoordinate::where('id', $idVoucher)->update(['recovered_voucher' => 1]);
+            // adicionando voucher_id resgatado
+            Participation::where('id', $id)->update(['voucher_id' => $idVoucher]);
 
-            // deletando o voucher que tem como referncia o id
+            //deletando o voucher para não seu utilizado novamente
             Voucher::where('id', $idVoucher)->update(['recovered_voucher' => 1]);
+
+            //adicionando quantos cupons foram recuperados em cada localização
+            VoucherCoordinate::where('id', $idVocuherCoordinates)->increment('qtn_recovered_voucher');
 
             return response()->json([
                 'success' => true,
-                'message' => $voucher,
+                'message' => $cupom,
             ]);
         }
     }

@@ -10,7 +10,7 @@ class VoucherCoordinate extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['latitudine_1', 'longitudine_1', 'voucher_id', 'recovered_voucher','custom_3', 'custom_4', 'custom_5'];
+    protected $fillable = ['latitudine_1', 'longitudine_1', 'qtn_recovered_voucher','custom_3', 'custom_4', 'custom_5'];
     protected $table = "vouchers_coordinates";
     protected $dates = ['deleted_at'];
 
@@ -20,8 +20,7 @@ class VoucherCoordinate extends Model
         return [
             'latitudine_1' => "required",
             'longitudine_1' => "required",
-            'voucher_id' => '|integer|nullable',
-            'recovered_voucher' => 'boolean|in:0,1'
+            'qtn_recovered_voucher' => 'integer'
         ];
     }
 
@@ -30,8 +29,7 @@ class VoucherCoordinate extends Model
         return [
             'latitudine_1.required' => "Campo é obrigátorio.",
             'longitudine_1.required' => "Campo é obrigátorio.",
-            'voucher_id.integer' => "Válido apenas valores númericos inteiros para esse campo.",
-            'recovered_voucher.boolean' => 'Só é válidos para esse campo 0 ou 1',
+            'qtn_recovered_voucher.integer' => 'Valido apenas valores inteiro.',
         ];
     }
 }
