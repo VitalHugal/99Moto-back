@@ -1,16 +1,16 @@
-
 import React, { useState, useRef, useEffect } from "react";
-// import Cookies from "js-cookie";
-import { USER_COORDINATES } from "./API/userApi.js"
+import { useParams, useLocation, useNavigate, Link } from 'react-router-dom';
+import { USER_COORDINATES } from "./API/userApi.js";
 import { toast } from "react-toastify";
 import './App.css';
 
 function App() {
+  const navigate = useNavigate(); // Correção aqui
+
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [currentDate, setCurrentDate] = useState("");
   const local_timeRef = useRef("");
-
 
   useEffect(() => {
     const today = new Date();
@@ -60,25 +60,30 @@ function App() {
   async function handleSubmitRegister(e) {
     e.preventDefault();
 
+    const hoursFormated = currentDate.split(' ');
+    const hoursFinal = hoursFormated[1];
+
     if (latitude !== "" && longitude !== "" && currentDate !== "") {
-      try {
-        const response = await USER_COORDINATES(latitude, longitude, currentDate, );
-        if (response?.errors) {
-          if (response.errors.user_coordinates_longitudine) {
-            toast.error(response.errors.user_coordinates_longitudine[0]);
-          }
-          if (response.errors.local_time) {
-            toast.error(response.errors.local_time[0]);
-          }
-          return;
-        }
-        toast.success("Cadastro realizado com sucesso!");
-      } catch (erro) {
-        toast.error("Erro ao cadastrar!");
+      const response = await USER_COORDINATES(latitude, longitude, currentDate);
+
+      if (hoursFinal < '17:45:00') {
+        console.log('fora do horário de participação');
       }
-    } else {
-      local_timeRef.current.focus();
-      toast.error("Preencha todos os campos corretamente!");
+      
+      if (response.success === false) {
+        console.log('Erro: ', response.message);
+        console.log('ID do Usuário: ', response.idUser);
+        return; // Aqui estava faltando
+      }
+
+      if (response.success === true) {
+        console.log('Requisição bem-sucedida.');
+        console.log('ID do Usuário: ', response.idUser);
+
+        // Usando o idUser corretamente no navigate
+        const idUser = response.idUser;
+        navigate(`/get-vouchers/${idUser}`);
+      }
     }
   }
 

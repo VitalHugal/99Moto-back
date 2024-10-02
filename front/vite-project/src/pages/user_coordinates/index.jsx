@@ -1,16 +1,18 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-// import Cookies from "js-cookie";
 import { USER_COORDINATES } from "../../API/userApi";
 import { toast } from "react-toastify";
+import { Navigate, useNavigate } from "react-router-dom";
+
 
 export default function UserCoordinates() {
+
+    const navigate = useNavigate();
+
     const [latitude, setLatitude] = useState("");
     const [longitude, setLongitude] = useState("");
     const [currentDate, setCurrentDate] = useState("");
     const local_timeRef = useRef("");
 
-    const navigate = useNavigate();
 
     useEffect(() => {
         const today = new Date();
@@ -25,50 +27,58 @@ export default function UserCoordinates() {
         setCurrentDate(formattedDate);
 
         if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                console.log("Latitude: " + position.coords.latitude);
-                console.log("Longitude: " + position.coords.longitude);
-                setCount(`Latitude: ${position.coords.latitude} / Longitude: ${position.coords.longitude}`);
-            }, function (error) {
-                switch (error.code) {
-                    case error.PERMISSION_DENIED:
-                        console.log("Permissão negada pelo usuário.");
-                        setCount("Permissão negada pelo usuário.");
-                        break;
-                    case error.POSITION_UNAVAILABLE:
-                        console.log("Informação de localização indisponível.");
-                        setCount("Informação de localização indisponível.");
-                        break;
-                    case error.TIMEOUT:
-                        console.log("A requisição de localização expirou.");
-                        setCount("A requisição de localização expirou.");
-                        break;
-                    case error.UNKNOWN_ERROR:
-                        console.log("Ocorreu um erro desconhecido.");
-                        setCount("Ocorreu um erro desconhecido.");
-                        break;
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    setLatitude(position.coords.latitude.toFixed(10));
+                    setLongitude(position.coords.longitude.toFixed(10));
+                },
+                function (error) {
+                    switch (error.code) {
+                        case error.PERMISSION_DENIED:
+                            toast.error("Permissão negada pelo usuário.");
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            toast.error("Informação de localização indisponível.");
+                            break;
+                        case error.TIMEOUT:
+                            toast.error("A requisição de localização expirou.");
+                            break;
+                        case error.UNKNOWN_ERROR:
+                            toast.error("Ocorreu um erro desconhecido.");
+                            break;
+                        default:
+                            break;
+                    }
+                },
+                {
+                    timeout: 10000, // Tempo limite de 10 segundos
                 }
-            }, {
-                timeout: 10000 // Tempo limite de 10 segundos
-            });
+            );
         } else {
-            console.log("Geolocalização não é suportada pelo navegador.");
-            setCount("Geolocalização não é suportada pelo navegador.");
+            toast.error("Geolocalização não é suportada pelo navegador.");
         }
     }, []);
 
     async function handleSubmitRegister(e) {
         e.preventDefault();
 
-        if (latitude !== "" && longitude !== "" && currentDate !== "") {
-            try {
-                const response = await USER_COORDINATES(latitude, longitude, currentDate);
+        const hoursFormated = currentDate.split(' ');
+        const hoursFinal = hoursFormated[1];
 
-            } catch (erro) {
-                console.error("Erro ao cadastrar!");
+        if (hoursFinal < '17:45:00') {
+            console.log('Fora do horário de participação');
+        }
+
+        if (latitude !== "" && longitude !== "" && currentDate !== "") {
+
+            const response = await USER_COORDINATES(latitude, longitude, currentDate);
+
+            if (response.success === false) {
+                console.log('erro');
             }
-        } else {
-            console.log("Erro ao cadastrar!");
+
+            if (response.success === true) {
+            }
         }
     }
 
@@ -108,6 +118,7 @@ export default function UserCoordinates() {
                         required
                     />
                 </div>
+
                 <button className="btn-primary">Cadastrar</button>
             </form>
         </>
