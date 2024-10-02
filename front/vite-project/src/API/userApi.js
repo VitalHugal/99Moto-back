@@ -14,8 +14,8 @@ export async function USER_COORDINATES(user_coordinates_latitudine, user_coordin
     console.log('CALL FUNCTION API');
 
     const response = await axios.post(API_URL + '/coordenadas-users', {
-        "latitudine": user_coordinates_latitudine,
-        "longitudine": user_coordinates_longitudine,
+        "user_coordinates_latitudine": user_coordinates_latitudine,
+        "user_coordinates_longitudine": user_coordinates_longitudine,
         "local_time": local_time
     },
         {

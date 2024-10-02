@@ -22,6 +22,6 @@ export async function GET_VOUCHER(idUser) {
         }
     });
 
-    // console.log(response.data);
+    console.log(response.data);
     return response.data;
 }
