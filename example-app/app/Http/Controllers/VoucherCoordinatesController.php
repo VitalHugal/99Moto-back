@@ -151,7 +151,7 @@ class VoucherCoordinatesController extends Controller
         }
 
         $voucher = Voucher::where('recovered_voucher', 0)->first();
-
+        
         if ($voucher === null) {
             return response()->json([
                 'success' => false,
@@ -162,7 +162,6 @@ class VoucherCoordinatesController extends Controller
         $idVoucher = $voucher->id;
 
         $cupom = $voucher->voucher;
-
 
         // se tiver voucher
         if (!empty($locationsWithinRadius)) {
