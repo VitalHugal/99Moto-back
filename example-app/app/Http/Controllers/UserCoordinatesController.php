@@ -41,40 +41,40 @@ class UserCoordinatesController extends Controller
             ->where('city_longitudine', $info_longitudine_formated[0])
             ->first();
 
-        // verificando se a coleção está vazia
-        if ($verifyExistsCoordinates === null) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Nenhuma localização encontrada',
-            ]);
-        }
+        // // verificando se a coleção está vazia
+        // if ($verifyExistsCoordinates === null) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Nenhuma localização encontrada',
+        //     ]);
+        // }
         
-        //recuperando noite e dia
-        $night = $verifyExistsCoordinates->night;
-        $dayLight = $verifyExistsCoordinates->daylight;
+        // //recuperando noite e dia
+        // $night = $verifyExistsCoordinates->night;
+        // $dayLight = $verifyExistsCoordinates->daylight;
 
-        //convertendo as strings de horario
-        $nightTime = \Carbon\Carbon::createFromFormat('H:i:s', $night);
-        $dayTime = \Carbon\Carbon::createFromFormat('H:i:s', $dayLight);
+        // //convertendo as strings de horario
+        // $nightTime = \Carbon\Carbon::createFromFormat('H:i:s', $night);
+        // $dayTime = \Carbon\Carbon::createFromFormat('H:i:s', $dayLight);
 
-        //formatando time
-        $currentTime = strtotime($info_local_time_formated[1]);
-        $nightTimeStart = strtotime($nightTime);
-        $nightTimeEnd = strtotime('23:59:59');
-        $dayTimeStart = strtotime('00:00:00');
-        $dayTimeEnd = strtotime($dayTime);
+        // //formatando time
+        // $currentTime = strtotime($info_local_time_formated[1]);
+        // $nightTimeStart = strtotime($nightTime);
+        // $nightTimeEnd = strtotime('23:59:59');
+        // $dayTimeStart = strtotime('00:00:00');
+        // $dayTimeEnd = strtotime($dayTime);
 
-        // comparar se o horário está entre 20:00 e 05:00
-        if (($currentTime >= $nightTimeStart && $currentTime <= $nightTimeEnd) ||
-            ($currentTime >= $dayTimeStart && $currentTime <= strtotime($dayTime))
-        ) {
-            // dd('aqui 1');
-        } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'Fora do horário de participação.',
-            ]);
-        }
+        // // comparar se o horário está entre 20:00 e 05:00
+        // if (($currentTime >= $nightTimeStart && $currentTime <= $nightTimeEnd) ||
+        //     ($currentTime >= $dayTimeStart && $currentTime <= strtotime($dayTime))
+        // ) {
+        //     // dd('aqui 1');
+        // } else {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Fora do horário de participação.',
+        //     ]);
+        // }
 
         // valida a requisição
         $coordinate_user = $request->validate(

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
-import { USER_COORDINATES } from "../../API/userApi";
+import { useParams, useLocation, useNavigate, Link } from 'react-router-dom';
+import { USER_COORDINATES } from "./API/userApi.js";
 import { toast } from "react-toastify";
-import { Navigate, useNavigate } from "react-router-dom";
 
 
 export default function UserCoordinates() {
@@ -13,7 +13,6 @@ export default function UserCoordinates() {
     const [currentDate, setCurrentDate] = useState("");
     const local_timeRef = useRef("");
 
-
     useEffect(() => {
         const today = new Date();
         const month = today.getMonth() + 1;
@@ -22,8 +21,8 @@ export default function UserCoordinates() {
         const hours = today.getHours();
         const minutes = today.getMinutes();
         const seconds = today.getSeconds();
-        const formattedDate =
-            date + "-" + month + "-" + year + " " + hours + ":" + minutes + ":" + seconds;
+        const formattedDate = date + "-" + month + "-" + year + " " + hours + ":" + minutes + ":" + seconds;
+
         setCurrentDate(formattedDate);
 
         if ("geolocation" in navigator) {
@@ -65,19 +64,27 @@ export default function UserCoordinates() {
         const hoursFormated = currentDate.split(' ');
         const hoursFinal = hoursFormated[1];
 
-        if (hoursFinal < '17:45:00') {
-            console.log('Fora do horário de participação');
-        }
-
+        // Verifica se os campos não estão vazios
         if (latitude !== "" && longitude !== "" && currentDate !== "") {
 
-            const response = await USER_COORDINATES(latitude, longitude, currentDate);
+            // verifica se a hora dentro do intervalo permitido (19:00 até 05:00)
+            if ((hoursFinal >= '19:00:00' && hoursFinal <= '23:59:00') || (hoursFinal >= '00:00:00' && hoursFinal <= '05:00:00')) {
+                // estiver ok, realiza o post
+                const response = await USER_COORDINATES(latitude, longitude, currentDate);
 
-            if (response.success === false) {
-                console.log('erro');
-            }
-
-            if (response.success === true) {
+                if (response.success === false) {
+                    console.log('Erro: ', response.message);
+                    console.log('ID do Usuário: ', response.idUser);
+                    navigate(`/get-vouchers/${response.idUser}`);
+                }
+                else if (response.success === true) {
+                    console.log('Requisição bem-sucedida.');
+                    console.log('ID do Usuário: ', response.idUser);
+                    navigate(`/get-vouchers/${response.idUser}`);
+                }
+            } else {
+                console.log('Fora do horário de participação');
+                return;
             }
         }
     }
