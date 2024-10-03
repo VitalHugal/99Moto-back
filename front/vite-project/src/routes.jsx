@@ -12,7 +12,7 @@ export default function AppRoutes() {
 
             <Route path="/coordenadas-users" element={<UserCoordinates />} />
 
-            <Route path="/get-vouchers/:idUser" element={<UserCoordinates />} />
+            <Route path="/get-vouchers/:idUser" element={<GetVoucher />} />
             
         </Routes>
     )

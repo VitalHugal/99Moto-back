@@ -74,6 +74,7 @@ function App() {
         if (response.success === false) {
           console.log('Erro: ', response.message);
           console.log('ID do Usuário: ', response.idUser);
+          
           navigate(`/get-vouchers/${response.idUser}`);
         }
         else if (response.success === true) {

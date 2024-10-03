@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useParams, useLocation, useNavigate, Link } from 'react-router-dom';
-import { USER_COORDINATES } from "./API/userApi.js";
+//import { USER_COORDINATES } from "./API/userApi.js";
 import { toast } from "react-toastify";
 
 
