@@ -65,6 +65,7 @@ class VoucherCoordinatesController extends Controller
         $info_latitudine_formated = explode('.', $latUser);
         $info_longitudine_formated = explode('.', $lonUser);
 
+        // dd($info_latitudine_formated[0], $info_longitudine_formated[0]);
         //busca o primeiro resultado de capital com base na localização do user
         $localUF = NightInCities::where('city_latitudine', $info_latitudine_formated[0])->where('city_longitudine', $info_longitudine_formated[0])->first();
 
@@ -77,7 +78,7 @@ class VoucherCoordinatesController extends Controller
 
         //pega a data e hora atual do servidor
         $date = new DateTime();
-        
+
         //verifica em qual grupo se encaixa para modificar o horario de acordo com a região
         if (in_array($UF, $UTC3)) {
         } elseif (in_array($UF, $UTC4)) {
@@ -157,7 +158,7 @@ class VoucherCoordinatesController extends Controller
         }
 
         $voucher = Voucher::where('recovered_voucher', 0)->first();
-        
+
         //se não houver retorna que acacbou os vouchers
         if ($voucher === null) {
             return response()->json([

@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useParams, useLocation, useNavigate, redirect } from 'react-router-dom';
-import { USER_COORDINATES } from "./API/userApi.js";
+import { USER_COORDINATES } from "../../API/userApi.js";
 import { toast } from "react-toastify";
 
+import Cookies from 'js-cookie';
 
 export default function UserCoordinates() {
 
@@ -71,22 +72,18 @@ export default function UserCoordinates() {
             if (hoursFinal >= '18:00:00' && hoursFinal <= '23:00:00') {
 
                 const response = await USER_COORDINATES(latitude, longitude, currentDate);
+                if (response.success == false) {
+                    console.log('sem cupom');
 
-                if (response.success === false) {
-                    console.log('SEM CUPOM: ', response.message);
-                    console.log('ID do Usuário: ', response.idUser);
+                    Cookies.set('userId', response.idUser, { expires: 7 });
+                    navigate(`/get-vouchers`);
 
-                    navigate(`/get-vouchers/${response.idUser}`);
-                    redirect(`/get-vouchers/${response.idUser}`);
-                }
-                else if (response.success === true) {
-                    console.log('COM CUPOM');
-                    console.log('ID do Usuário: ', response.idUser);
-                    navigate(`/get-vouchers/${response.idUser}`);
-                    redirect(`/get-vouchers/${response.idUser}`);
-                }
-            } else {
-                console.log('Fora do horário de participação');
+                } else if (response.success == true) {
+                    Cookies.set('userId', response.idUser, { expires: 7 });
+                    navigate(`/get-vouchers`);
+
+                } else
+                    console.log('fora do horario de participação');
                 return;
             }
         }
