@@ -31,7 +31,7 @@ class UserCoordinatesController extends Controller
         $info_longitudine = $request->user_coordinates_longitudine;
         $local_time = $request->local_time;
 
-        // formata latitude e longitude e pega os 3 primeiros caracteres ex(-23/-46) 
+        // formata latitude e longitude
         $info_latitudine_formated = explode('.', $info_latitudine);
         $info_longitudine_formated = explode('.', $info_longitudine);
         $info_local_time_formated = explode(' ', $local_time);
@@ -48,11 +48,12 @@ class UserCoordinatesController extends Controller
                 'message' => 'Nenhuma localização encontrada',
             ]);
         }
+        
         //recuperando noite e dia
         $night = $verifyExistsCoordinates->night;
         $dayLight = $verifyExistsCoordinates->daylight;
 
-        // convertendo as strings de horário para objetos de data/hora
+        //convertendo as strings de horario
         $nightTime = \Carbon\Carbon::createFromFormat('H:i:s', $night);
         $dayTime = \Carbon\Carbon::createFromFormat('H:i:s', $dayLight);
 
@@ -63,7 +64,7 @@ class UserCoordinatesController extends Controller
         $dayTimeStart = strtotime('00:00:00');
         $dayTimeEnd = strtotime($dayTime);
 
-        // Comparar se o horário está entre 20:00 e 05:00
+        // comparar se o horário está entre 20:00 e 05:00
         if (($currentTime >= $nightTimeStart && $currentTime <= $nightTimeEnd) ||
             ($currentTime >= $dayTimeStart && $currentTime <= strtotime($dayTime))
         ) {
@@ -101,7 +102,6 @@ class UserCoordinatesController extends Controller
             'start_participation' => $request->local_time,
         ]);
 
-        // recupera o id do usuário criado
         $idUser = $coordinate_user->id;
 
         // pega a latitude e longitude do usuário
