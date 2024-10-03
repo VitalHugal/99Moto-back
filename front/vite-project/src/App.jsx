@@ -72,13 +72,13 @@ function App() {
         const response = await USER_COORDINATES(latitude, longitude, currentDate);
 
         if (response.success === false) {
-          console.log('Erro: ', response.message);
+          console.log('SEM CUPOM: ', response.message);
           console.log('ID do Usuário: ', response.idUser);
           
           navigate(`/get-vouchers/${response.idUser}`);
         }
         else if (response.success === true) {
-          console.log('Requisição bem-sucedida.');
+          console.log('COM CUPOM');
           console.log('ID do Usuário: ', response.idUser);
           navigate(`/get-vouchers/${response.idUser}`);
         }
