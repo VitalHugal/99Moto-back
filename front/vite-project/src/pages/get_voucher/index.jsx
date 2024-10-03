@@ -1,12 +1,11 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
-import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { GET_VOUCHER } from '../../API/requestApi';
 
-export default function GetVoucher() {
+function GetVoucher() {
     const { idUser } = useParams(); // Pega o parâmetro idUser da URL
-    const navigate = useNavigate();
-    const location = useLocation();
-    const dadoRecebido = location.state;
+    const location = useLocation(); // Pega o estado se for necessário
 
     const [voucherData, setVoucherData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -15,21 +14,20 @@ export default function GetVoucher() {
     useEffect(() => {
         console.log("Iniciando requisição de voucher...");
 
-        async function carregaGruposProjeto() {
-            console.log('Effect /Projeto carregaGruposProjeto');
+        async function carregaVoucher() {
             try {
                 const response = await GET_VOUCHER(idUser);
-                console.log('Resposta da API: ', response); // Verifique o conteúdo aqui
-                setVoucherData(response); // Armazena os dados no estado
+                console.log('Dados do Voucher:', response); // Verifica se está retornando os dados corretos
+                setVoucherData(response); // Salva os dados no estado
             } catch (erro) {
-                console.log('Erro ao buscar o projeto desta page: ', erro);
+                console.error('Erro ao buscar o voucher:', erro);
                 setError(erro.message || 'Erro desconhecido');
             } finally {
                 setLoading(false);
             }
         }
 
-        carregaGruposProjeto();
+        carregaVoucher(); // Chama a função que busca os dados do voucher
     }, [idUser]);
 
     if (loading) {
@@ -42,13 +40,10 @@ export default function GetVoucher() {
 
     return (
         <div>
-            <h1>Voucher do usuário: {idUser}</h1>
-            {voucherData ? (
-                <div>
-                    <p>Detalhes do voucher: {JSON.stringify(voucherData)}</p> {/* Exibe os dados do voucher */}
-                </div>
-            ) : (<p>Dados não encontrados.</p>)};
-
+            <h1>Get Voucher Page</h1>
+            <p>Bem-vindo, usuário {idUser}</p> {/* Exibe o ID do usuário */}
         </div>
     );
 }
+
+export default GetVoucher;

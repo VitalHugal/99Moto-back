@@ -20,3 +20,14 @@ ReactDOM.render(
   </BrowserRouter>,
   document.getElementById("root")
 );
+
+// import React from 'react';
+// import ReactDOM from 'react-dom';
+// import AppRoutes from './AppRoutes'; // Certifique-se de importar as rotas
+
+// ReactDOM.render(
+//   <React.StrictMode>
+//     <AppRoutes />
+//   </React.StrictMode>,
+//   document.getElementById('root')
+// );

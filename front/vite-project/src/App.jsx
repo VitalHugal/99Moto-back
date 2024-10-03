@@ -68,7 +68,7 @@ function App() {
 
       // verifica se a hora dentro do intervalo permitido (19:00 até 05:00)
       if ((hoursFinal >= '19:00:00' && hoursFinal <= '23:59:00') || (hoursFinal >= '00:00:00' && hoursFinal <= '05:00:00')) {
-        // estiver ok, realiza o post
+
         const response = await USER_COORDINATES(latitude, longitude, currentDate);
 
         if (response.success === false) {
@@ -88,7 +88,6 @@ function App() {
       }
     }
   }
-
 
   return (
     <>
