@@ -57,31 +57,37 @@ class VoucherCoordinatesController extends Controller
             ]);
         }
 
-        // Pega a latitude e longitude do usuário
+        // pega a localização do usuario
         $latUser = $coordinate->user_coordinates_latitudine;
         $lonUser = $coordinate->user_coordinates_longitudine;
 
+        //formata para pegar os valores iniciais da localização
         $info_latitudine_formated = explode('.', $latUser);
         $info_longitudine_formated = explode('.', $lonUser);
 
-        $localUF = NightInCities::where('city_latitudine', $info_latitudine_formated)->where('city_longitudine', $info_longitudine_formated)->first();
+        //busca o primeiro resultado de capital com base na localização do user
+        $localUF = NightInCities::where('city_latitudine', $info_latitudine_formated[0])->where('city_longitudine', $info_longitudine_formated[0])->first();
 
-        $localUF->UF;
+        //estado
+        $UF = $localUF->UF;
 
+        //definindo os grupos com fuso horário diferente
         $UTC3 = ['DF', 'SP', 'RJ', 'MG', 'BA', 'RS', 'PR', 'SC', 'ES', 'GO', 'CE', 'MA', 'PI', 'PB', 'PE', 'AL', 'SE', 'RN'];
         $UTC4 = ['MT', 'MS', 'AM', 'RO', 'RR'];
 
+        //pega a data e hora atual do servidor
         $date = new DateTime();
-
-        if ($localUF == $UTC3) {
-        } elseif ($localUF == $UTC4) {
-            // Subtrai 1 hora
+        
+        //verifica em qual grupo se encaixa para modificar o horario de acordo com a região
+        if (in_array($UF, $UTC3)) {
+        } elseif (in_array($UF, $UTC4)) {
             $date->sub(new DateInterval('PT1H'));
         } else {
-            // Subtrai 2 horas
+            dd('sp -2');
             $date->sub(new DateInterval('PT2H'));
         }
 
+        //formatando a data e hora
         $formatedDate = $date->format('d-m-Y H:i:s');
 
         // Função para calcular a distância entre duas coordenadas
@@ -107,7 +113,6 @@ class VoucherCoordinatesController extends Controller
         // procedures para retornar todos as localizações de vouchers do banco de dados
         $results = DB::select('CALL GetAllVoucherCoordinates()');
 
-        // iniciando a variavel
         $locationsWithinRadius = [];
 
         // foreach para recuperar as latitudes e longitudes de todos os resultados do banco de dados
@@ -130,9 +135,10 @@ class VoucherCoordinatesController extends Controller
             }
         }
 
+        //recuperando o id da localização
         $idVocuherCoordinates = array_column($locationsWithinRadius, "id");
 
-        // se não houver voucher no raio de 100 metros do usuario ou vouchers esgostados
+        // se não houver voucher no raio de 100 metros do usuario
         if (empty($locationsWithinRadius)) {
 
             // adiciona na tabela participação que voucher NÂO foi resgatado
@@ -141,17 +147,18 @@ class VoucherCoordinatesController extends Controller
             // adicionando date e hora
             Participation::where('id', $id)->update(['end_participation' => $formatedDate]);
 
-            // adicionando 0 para voucher_id 
+            // adicionando null para voucher_id 
             Participation::where('id', $id)->update(['voucher_id' => null]);
 
             return response()->json([
                 'success' => false,
-                'message' => 'Não esta na area promocional.'
+                'message' => 'Não esta na área promocional (sem voucher.)'
             ]);
         }
 
         $voucher = Voucher::where('recovered_voucher', 0)->first();
         
+        //se não houver retorna que acacbou os vouchers
         if ($voucher === null) {
             return response()->json([
                 'success' => false,
@@ -160,7 +167,6 @@ class VoucherCoordinatesController extends Controller
         }
 
         $idVoucher = $voucher->id;
-
         $cupom = $voucher->voucher;
 
         // se tiver voucher
@@ -175,10 +181,10 @@ class VoucherCoordinatesController extends Controller
             // adicionando voucher_id resgatado
             Participation::where('id', $id)->update(['voucher_id' => $idVoucher]);
 
-            //deletando o voucher para não seu utilizado novamente
+            //deletando o voucher para não seu usada novamente
             Voucher::where('id', $idVoucher)->update(['recovered_voucher' => 1]);
 
-            //adicionando quantos cupons foram recuperados em cada localização
+            //adicionando +1 na localização que foi recuperado o voucher
             VoucherCoordinate::where('id', $idVocuherCoordinates)->increment('qtn_recovered_voucher');
 
             return response()->json([

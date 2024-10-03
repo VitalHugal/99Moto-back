@@ -48,7 +48,7 @@ class UserCoordinatesController extends Controller
                 'message' => 'Nenhuma localização encontrada',
             ]);
         }
-
+        //recuperando noite e dia
         $night = $verifyExistsCoordinates->night;
         $dayLight = $verifyExistsCoordinates->daylight;
 
@@ -56,7 +56,7 @@ class UserCoordinatesController extends Controller
         $nightTime = \Carbon\Carbon::createFromFormat('H:i:s', $night);
         $dayTime = \Carbon\Carbon::createFromFormat('H:i:s', $dayLight);
 
-
+        //formatando time
         $currentTime = strtotime($info_local_time_formated[1]);
         $nightTimeStart = strtotime($nightTime);
         $nightTimeEnd = strtotime('23:59:59');
