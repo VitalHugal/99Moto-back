@@ -14,73 +14,110 @@ class VoucherCoordinatesSeeder extends Seeder
     public function run(): void
     {
         VoucherCoordinate::insert([
+            //Rio de Janeiro
             [
-                //bizsys-teste
-                'latitudine_1' => '-23.522656785035263',
-                'longitudine_1' => '-46.709297929225315',
-                // 'voucher_id' => '1',
+                //Pão de Açúcar
+                'latitudine_1' => '-22.9546868',
+                'longitudine_1' => '-43.1653227',
             ],
+            [
+                //Praia de Copacabana
+                'latitudine_1' => '-22.9711',
+                'longitudine_1' => '-43.1822',
+            ],
+            [
+                //Jardim Botânico
+                'latitudine_1' => '-22.9679',
+                'longitudine_1' => '-43.2252',
+            ],
+            [
+                //Maracanã
+                'latitudine_1' => '-22.9121',
+                'longitudine_1' => '-43.2302',
+            ],
+            [
+                //Shopping RioSul
+                'latitudine_1' => '-22.9569',
+                'longitudine_1' => '-43.1775',
+            ],
+            [
+                //Barra Shopping
+                'latitudine_1' => '-22.9999',
+                'longitudine_1' => '-43.3606',
+            ],
+            [
+                //Terminal BRT Sulacap
+                'latitudine_1' => '-22.8847629',
+                'longitudine_1' => '-43.401615',
+            ],
+            [
+                //Terminal BRT Santa Cruz
+                'latitudine_1' => '-22.9174703',
+                'longitudine_1' => '-43.6847478',
+            ],
+            [
+                //Estação Nova Iguaçu
+                'latitudine_1' => '-22.7605181',
+                'longitudine_1' => '-43.4507024',
+            ],
+            [
+                //Madureira Shopping
+                'latitudine_1' => '-22.8701575',
+                'longitudine_1' => '-43.3415134',
+            ],
+
+            //são paulo
             [
                 //Estação Jardim Silveira
                 'latitudine_1' => '-23.5236786',
                 'longitudine_1' => '-46.8939034',
-                // 'voucher_id' => '2',
             ],
             [
                 //Estação Calmon Viana
                 'latitudine_1' => '-23.5254483',
                 'longitudine_1' => '-46.3334494',
-                // 'voucher_id' => '3',
             ],
             [
                 //Estação Brás Cubas
                 'latitudine_1' => '-23.5363155',
                 'longitudine_1' => '-46.2277955',
-                // 'voucher_id' => '4',
             ],
             [
                 //Fatec - Faculdade de Tecnologia de Carapicuíba
                 'latitudine_1' => '-23.5170802',
                 'longitudine_1' => '-46.8379756',
-                // 'voucher_id' => '5',
             ],
             [
                 //UNINOVE - Campus Osasco
                 'latitudine_1' => '-23.5334248',
                 'longitudine_1' => '-46.7796853',
-                // 'voucher_id' => '6',
             ],
             [
                 //Shopping Iguatemi Alphaville - Barueri
                 'latitudine_1' => '-23.5045588',
                 'longitudine_1' => '-46.8509371',
-                // 'voucher_id' => '7',
             ],
             [
                 //Shopping Tamboré - Barueri
                 'latitudine_1' => '-23.5043534',
                 'longitudine_1' => '-46.8369255',
-                // 'voucher_id' => '8',
             ],
             [
                 //Estação Carapicuíba
                 'latitudine_1' => '-23.5187066',
                 'longitudine_1' => '-46.8382247',
-                // 'voucher_id' => '9',
             ],
             [
                 //Estação Franco da Rocha
                 'latitudine_1' => '-23.3296758',
                 'longitudine_1' => '-46.7289516',
-                // 'voucher_id' => '10',
             ],
             [
                 //Estação General Miguel Costa
                 'latitudine_1' => '-23.5235508',
                 'longitudine_1' => '-46.8178711',
-                // 'voucher_id' => '11',
             ],
-            
+
         ]);
     }
 }
