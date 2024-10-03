@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useParams, useLocation, useNavigate, redirect  } from 'react-router-dom';
+import { useParams, useLocation, useNavigate, redirect } from 'react-router-dom';
 import { USER_COORDINATES } from "./API/userApi.js";
 import { toast } from "react-toastify";
 import './App.css';
 
 function App() {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
@@ -21,7 +21,7 @@ function App() {
     const minutes = today.getMinutes();
     const seconds = today.getSeconds();
     const formattedDate = date + "-" + month + "-" + year + " " + hours + ":" + minutes + ":" + seconds;
-    
+
     setCurrentDate(formattedDate);
 
     if ("geolocation" in navigator) {
@@ -74,7 +74,7 @@ function App() {
         if (response.success === false) {
           console.log('SEM CUPOM: ', response.message);
           console.log('ID do Usuário: ', response.idUser);
-          
+
           navigate(`/get-vouchers/${response.idUser}`);
           redirect(`/get-vouchers/${response.idUser}`);
         }

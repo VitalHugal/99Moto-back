@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useParams, useLocation, useNavigate, Link } from 'react-router-dom';
+import { useParams, useLocation, useNavigate, redirect } from 'react-router-dom';
 import { USER_COORDINATES } from "./API/userApi.js";
 import { toast } from "react-toastify";
 
@@ -68,19 +68,22 @@ export default function UserCoordinates() {
         if (latitude !== "" && longitude !== "" && currentDate !== "") {
 
             // verifica se a hora dentro do intervalo permitido (19:00 até 05:00)
-            if ((hoursFinal >= '19:00:00' && hoursFinal <= '23:59:00') || (hoursFinal >= '00:00:00' && hoursFinal <= '05:00:00')) {
-                // estiver ok, realiza o post
+            if (hoursFinal >= '18:00:00' && hoursFinal <= '23:00:00') {
+
                 const response = await USER_COORDINATES(latitude, longitude, currentDate);
 
                 if (response.success === false) {
-                    console.log('Erro: ', response.message);
+                    console.log('SEM CUPOM: ', response.message);
                     console.log('ID do Usuário: ', response.idUser);
+
                     navigate(`/get-vouchers/${response.idUser}`);
+                    redirect(`/get-vouchers/${response.idUser}`);
                 }
                 else if (response.success === true) {
-                    console.log('Requisição bem-sucedida.');
+                    console.log('COM CUPOM');
                     console.log('ID do Usuário: ', response.idUser);
                     navigate(`/get-vouchers/${response.idUser}`);
+                    redirect(`/get-vouchers/${response.idUser}`);
                 }
             } else {
                 console.log('Fora do horário de participação');
