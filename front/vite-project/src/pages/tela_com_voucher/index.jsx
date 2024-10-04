@@ -21,8 +21,17 @@ const Voucher = () => {
 
     return (
         <div>
-            <h1>CUPOM</h1>
-            <p>CUPOM : {cupom || 'Nenhum cupom encontrado.'}</p>
+            <p>Atingimos <strong>1 BILHÃO</strong></p> 
+            <p>de corridas graças a você,</p> 
+            <p>obrigado!</p>
+            <p>{cupom || 'Nenhum cupom encontrado.'}</p>
+            <button>Copiar código</button>
+
+            <p>Utilize o código na aba meus</p>
+            <p>descontos no app 99.</p>
+
+            <p>Ainda não tem</p>
+            <p>o app 99? <a href="#">Clique aqui.</a></p>
         </div>
     );
 };

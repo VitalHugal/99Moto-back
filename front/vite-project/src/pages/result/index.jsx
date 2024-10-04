@@ -28,10 +28,11 @@ const Result = () => {
 
   return (
     <div>
-      <h1>Parabens</h1>
-      <p>Aqui estão seu cupom!</p>
+      <h1>Parabéns!</h1>
+      <p>Você capturou um <strong>cupom</strong> de</p>
+      <p>99MOTO</p>
       <button onClick={handleGoToVouchers} className="btn-primary">
-        Ir para Vouchers
+        Continuar
       </button>
     </div>
   );
