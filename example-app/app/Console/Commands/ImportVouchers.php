@@ -9,7 +9,8 @@ use Exception;
 
 class ImportVouchers extends Command
 {
-    protected $signature = 'import:vouchers {file}'; // Definir o nome do parâmetro como 'file'
+    // Definir o nome do parâmetro como 'file'
+    protected $signature = 'import:vouchers {file}'; 
     protected $description = 'Importar vouchers do arquivo CSV';
 
     public function __construct()
@@ -19,7 +20,8 @@ class ImportVouchers extends Command
 
     public function handle()
     {
-        $file = $this->argument('file'); // Obtenha o caminho do arquivo CSV
+        // Obtenha o caminho do arquivo CSV
+        $file = $this->argument('file'); 
 
         try {
             // Verifica se o arquivo existe
@@ -30,11 +32,13 @@ class ImportVouchers extends Command
 
             // Tente ler o arquivo CSV
             $csv = Reader::createFromPath($file, 'r');
-            $csv->setHeaderOffset(0); // Defina o cabeçalho (0 se houver cabeçalho no CSV)
+            // Defina o cabeçalho (0 se houver cabeçalho no CSV)
+            $csv->setHeaderOffset(0); 
 
             foreach ($csv as $record) {
                 DB::table('vouchers')->insert([
-                    'voucher' => $record['voucher'], // Insere o valor do voucher
+                    // Insere o valor do voucher
+                    'voucher' => $record['voucher'], 
                 ]);
             }
 

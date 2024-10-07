@@ -9,7 +9,8 @@ use Exception;
 
 class ImportCoordinates extends Command
 {
-    protected $signature = 'import:coordinates {file}'; // Definir o nome do parâmetro como 'file'
+    // Definir o nome do parâmetro como 'file'
+    protected $signature = 'import:coordinates {file}'; 
     protected $description = 'Importar coordenadas do arquivo CSV';
 
     public function __construct()
@@ -19,7 +20,8 @@ class ImportCoordinates extends Command
 
     public function handle()
     {
-        $file = $this->argument('file'); // Obtenha o caminho do arquivo CSV
+        //obtenha o caminho do arquivo CSV
+        $file = $this->argument('file'); 
 
         try {
             // Verifica se o arquivo existe
@@ -30,7 +32,8 @@ class ImportCoordinates extends Command
 
             // Tente ler o arquivo CSV
             $csv = Reader::createFromPath($file, 'r');
-            $csv->setHeaderOffset(0); // Defina o cabeçalho (0 se houver cabeçalho no CSV)
+            // Defina o cabeçalho (0 se houver cabeçalho no CSV)
+            $csv->setHeaderOffset(0); 
 
             foreach ($csv as $record) {
                 DB::table('vouchers_coordinates')->insert([
