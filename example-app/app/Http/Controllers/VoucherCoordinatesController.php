@@ -135,7 +135,7 @@ class VoucherCoordinatesController extends Controller
             }
         }
 
-        //recuperando o id da localização
+        //recuperando o id da localizaçao
         $idVocuherCoordinates = array_column($locationsWithinRadius, "id");
 
         // se não houver voucher no raio de 100 metros do usuario
@@ -184,7 +184,7 @@ class VoucherCoordinatesController extends Controller
             //deletando o voucher para não seu usada novamente
             Voucher::where('id', $idVoucher)->update(['recovered_voucher' => 1]);
 
-            //adicionando +1 na localização que foi recuperado o voucher
+            //adicionando +1 na localizacaoo que foi recuperado o voucher
             VoucherCoordinate::where('id', $idVocuherCoordinates)->increment('qtn_recovered_voucher');
 
             return response()->json([
