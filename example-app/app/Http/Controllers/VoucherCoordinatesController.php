@@ -24,7 +24,6 @@ class VoucherCoordinatesController extends Controller
         $this->voucher_coordinate = $voucher_coordinate;
     }
 
-    // endpoint para inserir localizacao dos vouchers
     public function insertVoucherCoordinates(Request $request)
     {
         // valida a requisição
@@ -43,13 +42,11 @@ class VoucherCoordinatesController extends Controller
         return response()->json($voucher_coordinate);
     }
 
-    // endpoint para recuperar voucher
     public function getVouchers($id)
     {
-        // Encontra as coordenadas do usuario
+        
         $coordinate = UserCoordinate::find($id);
-
-        // se nao encontrado o id informado na requisicao retorna false
+        
         if ($coordinate === null) {
             return response()->json([
                 'success' => false,
@@ -79,7 +76,7 @@ class VoucherCoordinatesController extends Controller
         //pega a data e hora atual do servidor
         $date = new DateTime();
 
-        //verifica em qual grupo se encaixa para modificar o horario de acordo com a região
+        //verifica em qual grupo se encaixa para modificar o horario de acordo com a regiao
         if (in_array($UF, $UTC3)) {
         } elseif (in_array($UF, $UTC4)) {
             $date->sub(new DateInterval('PT1H'));
