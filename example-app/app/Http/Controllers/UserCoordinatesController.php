@@ -23,10 +23,9 @@ class UserCoordinatesController extends Controller
         $this->participation = $participation;
     }
 
-    //endpoint para inserir coordenadas do usuário
     public function coordinatesUsers(Request $request)
     {
-        // recupera os dados da requisição
+        // recupera os dados da requisicao
         $info_latitudine = $request->user_coordinates_latitudine;
         $info_longitudine = $request->user_coordinates_longitudine;
         $local_time = $request->local_time;
@@ -48,7 +47,7 @@ class UserCoordinatesController extends Controller
         //         'message' => 'Nenhuma localização encontrada',
         //     ]);
         // }
-        
+
         // //recuperando noite e dia
         // $night = $verifyExistsCoordinates->night;
         // $dayLight = $verifyExistsCoordinates->daylight;
@@ -76,26 +75,26 @@ class UserCoordinatesController extends Controller
         //     ]);
         // }
 
-        // valida a requisição
+        //valida a requisicao
         $coordinate_user = $request->validate(
             $this->coordinate_user->rulesCoordinatesUsers2(),
             $this->coordinate_user->feedbackCoordinatesUsers2(),
         );
 
-        // valida a requisição
+        //valida a requisicao
         $participation = $request->validate(
             $this->coordinate_user->rulesCoordinatesUsers(),
             $this->coordinate_user->feedbackCoordinatesUsers()
         );
 
-        // se tudo ok com a validação cria userCoordinate
+        // se tudo ok com a validacao cria userCoordinate
         $coordinate_user = $this->coordinate_user->create([
             'user_coordinates_latitudine' => $request->user_coordinates_latitudine,
             'user_coordinates_longitudine' => $request->user_coordinates_longitudine,
             'local_time' => $request->local_time,
         ]);
 
-        // se tudo ok com a validação cria participation
+        // se tudo ok com a validacao cria participation
         $participation = $this->participation->create([
             'user_participation_latitudine' => $request->user_coordinates_latitudine,
             'user_participation_longitudine' => $request->user_coordinates_longitudine,
@@ -104,14 +103,15 @@ class UserCoordinatesController extends Controller
 
         $idUser = $coordinate_user->id;
 
-        // pega a latitude e longitude do usuário
+        //pega a latitude e longitude do usuario
         $latUser = $coordinate_user->user_coordinates_latitudine;
         $lonUser = $coordinate_user->user_coordinates_longitudine;
 
-        // função para calcular a distância entre duas coordenadas
+        //funçao para calcular a distancia entre duas coordenadas
         function getDistanceFromLatLonInKm($lat1, $lon1, $lat2, $lon2)
         {
-            $R = 6371; // Raio da Terra em km
+            // raio da Terra em km
+            $R = 6371; 
             $dLat = deg2rad($lat2 - $lat1);
             $dLon = deg2rad($lon2 - $lon1);
 
@@ -121,17 +121,17 @@ class UserCoordinatesController extends Controller
 
             $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
 
-            // distância em km
+            // distancia em km
             return $R * $c;
         }
 
-        // definindo o raio máximo 100 metros
+        //definindo o raio máximo 100 metros
         $radiusInKm = 100 / 1000;
 
-        // procedures para retornar todos os voucher do banco de dados
+        //procedures para retornar todos os voucher do banco de dados
         $results = DB::select('CALL GetAllVoucherCoordinates()');
 
-        // iniciando a variavel
+        //iniciando a variavel
         $locationsWithinRadius = [];
 
         // foreach para recuperar as latitudes e longitudes de todos os resultados do banco de dados
@@ -142,11 +142,12 @@ class UserCoordinatesController extends Controller
             // calcula a distância entre o usuário e a localização atual
             $distanceInKm = getDistanceFromLatLonInKm($latUser, $lonUser, $latDb, $lonDb);
 
-            // verifica se a distância está dentro do limite definido em radiusInKm
+            // verifica se a distancia está dentro do limite definido em radiusInKm
             if ($distanceInKm <= $radiusInKm) {
                 $locationsWithinRadius[] = [
                     'id' => $location->id,
-                    'distance_in_meters' => $distanceInKm * 1000, // Convertendo para metros
+                    //convertendo para metros
+                    'distance_in_meters' => $distanceInKm * 1000,
                 ];
             }
         }
@@ -156,7 +157,6 @@ class UserCoordinatesController extends Controller
 
             // se estiver em area promocional adiciona 1 na coluna 
             Participation::where('id', $idUser)->update(['promotional_area' => 1]);
-
             return response()->json([
                 'success' => true,
                 'message' => 'usuário em região promocional',
@@ -166,7 +166,6 @@ class UserCoordinatesController extends Controller
 
             // senão estiver em area promocional adiciona 0 na coluna 
             Participation::where('id', $idUser)->update(['promotional_area' => 0]);
-
             return response()->json([
                 'success' => false,
                 'message' => 'usuário em região NÃO promocional',
@@ -181,14 +180,12 @@ class UserCoordinatesController extends Controller
         //encontra as coordenadas do usuário
         $deleteCoordinatesUsers = $this->coordinate_user->find($id);
 
-        //se não encontrado o id informado na requisição retorna false
         if ($deleteCoordinatesUsers === null) {
             return  response()->json(['error' => "Nenhum resultado encontrado."]);
         }
 
         // deleta userCoordinates
         $deleteCoordinatesUsers->delete();
-
         return response()->json(["sucesso" => 'Coordenadas do usuário excluida com sucesso.']);
     }
 }
