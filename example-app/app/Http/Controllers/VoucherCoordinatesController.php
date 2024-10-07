@@ -81,7 +81,6 @@ class VoucherCoordinatesController extends Controller
         } elseif (in_array($UF, $UTC4)) {
             $date->sub(new DateInterval('PT1H'));
         } else {
-            dd('sp -2');
             $date->sub(new DateInterval('PT2H'));
         }
 
