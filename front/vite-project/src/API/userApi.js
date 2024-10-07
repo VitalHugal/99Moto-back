@@ -21,7 +21,8 @@ export async function USER_COORDINATES(user_coordinates_latitudine, user_coordin
         {
             headers: {
                 "Accept": "application/json",
-                'X-Dry-Run': true
+                'X-Dry-Run': true,
+                'Access-Control-Allow-Origin': '*',
             }
         }
     );

@@ -18,7 +18,8 @@ export async function GET_VOUCHER(idUser) {
     const response = await axios.get(API_URL + '/get-vouchers/' + idUser, {
         headers: {
             "Accept": "application/json",
-            'X-Dry-Run': true
+            'X-Dry-Run': true,
+            'Access-Control-Allow-Origin': '*',
         }
     });
 
